@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Koshai Finder — Complete Development Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1D6B45;
+  --primary-light: #E8F5EE;
+  --primary-dark: #145232;
+  --accent: #1A5F9E;
+  --accent-light: #EBF3FB;
+  --warning: #BA7517;
+  --warning-light: #FFF8E7;
+  --danger: #A32D2D;
+  --danger-light: #FBEAEA;
+  --dark: #1A1A1A;
+  --gray: #555555;
+  --gray-light: #F5F5F5;
+  --border: #E0E0E0;
+  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0 }
+
+html { scroll-behavior: smooth }
+
+body {
+  font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+  background: #FAFAFA;
+  color: var(--dark);
+  line-height: 1.6;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────────────────── */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  z-index: 1000;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--primary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-btn {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: var(--gray);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover, .nav-btn.active {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+/* ── HERO ─────────────────────────────────────────────────────────────── */
+.hero {
+  padding: 140px 2rem 80px;
+  text-align: center;
+  background: linear-gradient(135deg, #fff 0%, var(--primary-light) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(29,107,69,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: white;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: var(--gray);
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+}
+
+.hero-badge span {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+
+.hero h1 .highlight {
+  color: var(--primary);
+  position: relative;
+}
+
+.hero h1 .highlight::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: var(--primary-light);
+  z-index: -1;
+  border-radius: 4px;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--gray);
+  max-width: 600px;
+  margin: 0 auto 40px;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--gray);
+}
+
+/* ── SECTIONS ───────────────────────────────────────────────────────────── */
+.section {
+  padding: 80px 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  margin-bottom: 48px;
+}
+
+.section-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+/* ── CARDS ─────────────────────────────────────────────────────────────── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+.card-icon.green { background: var(--primary-light); color: var(--primary); }
+.card-icon.blue { background: var(--accent-light); color: var(--accent); }
+.card-icon.amber { background: var(--warning-light); color: var(--warning); }
+.card-icon.red { background: var(--danger-light); color: var(--danger); }
+
+.card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.card p {
+  font-size: 0.95rem;
+  color: var(--gray);
+}
+
+/* ── TECH STACK ─────────────────────────────────────────────────────────── */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.tech-item {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.tech-item:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.tech-item .icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.tech-item .name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.tech-item .desc {
+  font-size: 0.8rem;
+  color: var(--gray);
+  margin-top: 4px;
+}
+
+/* ── PIPELINE ─────────────────────────────────────────────────────────── */
+.pipeline {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding: 20px 0;
+  scroll-snap-type: x mandatory;
+}
+
+.pipeline-phase {
+  min-width: 320px;
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  scroll-snap-align: start;
+}
+
+.phase-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.phase-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.phase-badge.mvp { background: var(--accent-light); color: var(--accent); }
+.phase-badge.trust { background: var(--primary-light); color: var(--primary); }
+.phase-badge.growth { background: var(--warning-light); color: var(--warning); }
+.phase-badge.scale { background: var(--danger-light); color: var(--danger); }
+
+.phase-title {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.phase-duration {
+  font-size: 0.85rem;
+  color: var(--gray);
+  margin-bottom: 16px;
+}
+
+.feature-list {
+  list-style: none;
+}
+
+.feature-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.feature-list li:last-child {
+  border-bottom: none;
+}
+
+.feature-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--gray-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ── CODE BLOCKS ───────────────────────────────────────────────────────── */
+.code-block {
+  background: #1E1E1E;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 16px 0;
+}
+
+.code-header {
+  background: #2D2D2D;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.code-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.code-dot.red { background: #FF5F56; }
+.code-dot.yellow { background: #FFBD2E; }
+.code-dot.green { background: #27C93F; }
+
+.code-title {
+  color: #888;
+  font-size: 0.85rem;
+  margin-left: 8px;
+}
+
+.code-content {
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.code-content pre {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  color: #D4D4D4;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.code-content .key { color: #9CDCFE; }
+.code-content .string { color: #CE9178; }
+.code-content .number { color: #B5CEA8; }
+.code-content .comment { color: #6A9955; }
+
+/* ── SCREENS TABLE ─────────────────────────────────────────────────────── */
+.screens-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.screens-table th {
+  background: var(--primary);
+  color: white;
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.screens-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.screens-table tr:last-child td {
+  border-bottom: none;
+}
+
+.screens-table tr:hover td {
+  background: var(--primary-light);
+}
+
+.screen-name {
+  font-weight: 600;
+}
+
+.screen-type {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.screen-type.activity { background: var(--accent-light); color: var(--accent); }
+.screen-type.fragment { background: var(--primary-light); color: var(--primary); }
+
+/* ── SCHEMA ─────────────────────────────────────────────────────────────── */
+.schema-section {
+  margin-bottom: 40px;
+}
+
+.schema-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.schema-title::before {
+  content: '📁';
+}
+
+.schema-code {
+  background: #252526;
+  border-radius: 8px;
+  padding: 16px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  color: #D4D4D4;
+  overflow-x: auto;
+}
+
+.schema-code .field { color: #9CDCFE; }
+.schema-code .type { color: #4EC9B0; }
+.schema-code .string { color: #CE9178; }
+.schema-code .number { color: #B5CEA8; }
+.schema-code .bool { color: #569CD6; }
+
+/* ── FOOTER ─────────────────────────────────────────────────────────────── */
+.footer {
+  background: var(--dark);
+  color: white;
+  padding: 60px 2rem;
+  text-align: center;
+}
+
+.footer-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.footer h2 {
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+.footer p {
+  color: #888;
+  margin-bottom: 24px;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  color: #888;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: white;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 2.5rem; }
+  .hero-stats { gap: 24px; }
+  .stat-value { font-size: 2rem; }
+  .header { padding: 0 1rem; }
+  .nav-links { display: none; }
+  .section { padding: 60px 1rem; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+
+/* ── ANIMATIONS ───────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">🔪</div>
+    <span>Koshai Finder</span>
+  </div>
+  <nav class="nav-links">
+    <button class="nav-btn active" onclick="scrollToSection('overview')">Overview</button>
+    <button class="nav-btn" onclick="scrollToSection('problem')">Problem</button>
+    <button class="nav-btn" onclick="scrollToSection('tech')">Tech Stack</button>
+    <button class="nav-btn" onclick="scrollToSection('pipeline')">Pipeline</button>
+    <button class="nav-btn" onclick="scrollToSection('screens')">Screens</button>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    📋 Complete Development Plan · <span>24 Weeks</span> Timeline
+  </div>
+  <h1>Koshai <span class="highlight">Finder</span></h1>
+  <p class="hero-subtitle">
+    Two-sided marketplace app connecting families with verified koshais (animal slaughterers) in Bangladesh. Built for Eid ul-Adha peak demand.
+  </p>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-value">18</div>
+      <div class="stat-label">Features</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">4</div>
+      <div class="stat-label">Phases</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">22</div>
+      <div class="stat-label">Screens</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">24</div>
+      <div class="stat-label">Weeks</div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section id="overview" class="section">
+  <div class="section-header">
+    <div class="section-label">01 — Overview</div>
+    <h2 class="section-title">Executive Summary</h2>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon green">📱</div>
+      <h3>Platform</h3>
+      <p>Android (Kotlin) — minSDK 21 covers 98% of Bangladeshi devices</p>
+    </div>
+    <div class="card">
+      <div class="card-icon blue">🔥</div>
+      <h3>Backend</h3>
+      <p>Firebase (Auth, Firestore, Realtime DB, FCM, Storage, Cloud Functions)</p>
+    </div>
+    <div class="card">
+      <div class="card-icon amber">🗺️</div>
+      <h3>Maps</h3>
+      <p>Google Maps SDK + Google Places API for koshai locations</p>
+    </div>
+    <div class="card">
+      <div class="card-icon red">💳</div>
+      <h3>Payment</h3>
+      <p>bKash & Nagad payment gateway integration (Phase 3)</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM & SOLUTION -->
+<section id="problem" class="section">
+  <div class="section-header">
+    <div class="section-label">02 — Problem & Solution</div>
+    <h2 class="section-title">The Challenge</h2>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <h3>⚡ Peak Demand Spike</h3>
+      <p>Demand for koshais spikes 10–50x normal in a 24-hour window during Eid ul-Adha</p>
+    </div>
+    <div class="card">
+      <h3>📞 No Central Platform</h3>
+      <p>Word-of-mouth only — families rely on neighbors or mosque connections</p>
+    </div>
+    <div class="card">
+      <h3>❌ No-shows Common</h3>
+      <p>Double bookings and no-shows leave families stranded on Eid morning</p>
+    </div>
+    <div class="card">
+      <h3>💰 No Price Transparency</h3>
+      <p>Users often overpay or get quoted unfair rates at the last minute</p>
+    </div>
+    <div class="card">
+      <h3>🔒 No Trust Mechanism</h3>
+      <p>No way to verify a koshai's skill, hygiene, or legitimacy</p>
+    </div>
+    <div class="card">
+      <h3>📅 No Scheduling Tools</h3>
+      <p>Koshais cannot manage multiple bookings efficiently</p>
+    </div>
+  </div>
+  
+  <div style="margin-top: 48px;">
+    <h2 class="section-title" style="margin-bottom: 24px;">The Solution</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🤝 Two-sided Marketplace</h3>
+        <p>Users book, koshais accept — all inside one app</p>
+      </div>
+      <div class="card">
+        <h3>📅 Slot-based Scheduling</h3>
+        <p>Prevents double booking and manages Eid-morning rush</p>
+      </div>
+      <div class="card">
+        <h3>✅ Verified Badge System</h3>
+        <p>NID + trade certificate review builds trust</p>
+      </div>
+      <div class="card">
+        <h3>💳 In-app Payment</h3>
+        <p>bKash/Nagad eliminates cash ambiguity and reduces no-shows</p>
+      </div>
+      <div class="card">
+        <h3>⭐ Ratings & Reviews</h3>
+        <p>Creates accountability and surfaces top performers</p>
+      </div>
+      <div class="card">
+        <h3>📍 Real-time Tracking</h3>
+        <p>Live availability and booking status give users confidence</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="tech" class="section">
+  <div class="section-header">
+    <div class="section-label">03 — Technology Stack</div>
+    <h2 class="section-title">Full Tech Stack</h2>
+  </div>
+  <div class="tech-grid">
+    <div class="tech-item">
+      <div class="icon">📓</div>
+      <div class="name">Android Studio</div>
+      <div class="desc">Hedgehog+ IDE</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">🦄</div>
+      <div class="name">Kotlin</div>
+      <div class="desc">1.9+ Language</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">🎨</div>
+      <div class="name">Material Design 3</div>
+      <div class="desc">UI Framework</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">🧭</div>
+      <div class="name">Navigation Component</div>
+      <div class="desc">Jetpack</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">🏗️</div>
+      <div class="name">MVVM</div>
+      <div class="desc">Architecture</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">🔐</div>
+      <div class="name">Firebase Auth</div>
+      <div class="desc">Phone OTP</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">🗄️</div>
+      <div class="name">Cloud Firestore</div>
+      <div class="desc">Database</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">⚡</div>
+      <div class="name">Realtime DB</div>
+      <div class="desc">Live data</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">🔔</div>
+      <div class="name">FCM</div>
+      <div class="desc">Push alerts</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">📁</div>
+      <div class="name">Firebase Storage</div>
+      <div class="desc">File storage</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">☁️</div>
+      <div class="name">Cloud Functions</div>
+      <div class="desc">Backend logic</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">🗺️</div>
+      <div class="name">Google Maps SDK</div>
+      <div class="desc">Location</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">📍</div>
+      <div class="name">Play Services Location</div>
+      <div class="desc">GPS</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">💰</div>
+      <div class="name">bKash API</div>
+      <div class="desc">Payment</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">🖼️</div>
+      <div class="name">Glide 4.x</div>
+      <div class="desc">Image loading</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">🔌</div>
+      <div class="name">Retrofit 2</div>
+      <div class="desc">HTTP</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">💉</div>
+      <div class="name">Hilt</div>
+      <div class="desc">DI</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">🔄</div>
+      <div class="name">Kotlin Coroutines</div>
+      <div class="desc">Async</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">🧪</div>
+      <div class="name">JUnit + Espresso</div>
+      <div class="desc">Testing</div>
+    </div>
+    <div class="tech-item">
+      <div class="icon">🔄</div>
+      <div class="name">GitHub Actions</div>
+      <div class="desc">CI/CD</div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section id="pipeline" class="section">
+  <div class="section-header">
+    <div class="section-label">04 — Development Pipeline</div>
+    <h2 class="section-title">4 Phases · 24 Weeks</h2>
+  </div>
+  <div class="pipeline">
+    <div class="pipeline-phase">
+      <div class="phase-header">
+        <span class="phase-badge mvp">Phase 1</span>
+        <span class="phase-title">MVP</span>
+      </div>
+      <div class="phase-duration">Weeks 1–6</div>
+      <ul class="feature-list">
+        <li><span class="feature-check"></span>Phone OTP auth (Firebase)</li>
+        <li><span class="feature-check"></span>Koshai registration (NID, photo)</li>
+        <li><span class="feature-check"></span>Home map view (Google Maps)</li>
+        <li><span class="feature-check"></span>Slot-based booking</li>
+        <li><span class="feature-check"></span>Push notifications (FCM)</li>
+      </ul>
+    </div>
+    <div class="pipeline-phase">
+      <div class="phase-header">
+        <span class="phase-badge trust">Phase 2</span>
+        <span class="phase-title">Trust</span>
+      </div>
+      <div class="phase-duration">Weeks 7–12</div>
+      <ul class="feature-list">
+        <li><span class="feature-check"></span>Verified badge system</li>
+        <li><span class="feature-check"></span>Live booking tracker</li>
+        <li><span class="feature-check"></span>In-app chat</li>
+        <li><span class="feature-check"></span>Ratings & photo reviews</li>
+        <li><span class="feature-check"></span>Animal count estimator</li>
+      </ul>
+    </div>
+    <div class="pipeline-phase">
+      <div class="phase-header">
+        <span class="phase-badge growth">Phase 3</span>
+        <span class="phase-title">Growth</span>
+      </div>
+      <div class="phase-duration">Weeks 13–18</div>
+      <ul class="feature-list">
+        <li><span class="feature-check"></span>bKash / Nagad payment</li>
+        <li><span class="feature-check"></span>Surge pricing (Eid mode)</li>
+        <li><span class="feature-check"></span>Waitlist system</li>
+        <li><span class="feature-check"></span>Group booking</li>
+        <li><span class="feature-check"></span>Smart reminders</li>
+      </ul>
+    </div>
+    <div class="pipeline-phase">
+      <div class="phase-header">
+        <span class="phase-badge scale">Phase 4</span>
+        <span class="phase-title">Scale</span>
+      </div>
+      <div class="phase-duration">Weeks 19–24</div>
+      <ul class="feature-list">
+        <li><span class="feature-check"></span>Demand heatmap</li>
+        <li><span class="feature-check"></span>Koshai leaderboard</li>
+        <li><span class="feature-check"></span>Admin web dashboard</li>
+        <li><span class="feature-check"></span>Referral system</li>
+        <li><span class="feature-check"></span>Play Store publish</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FIRESTORE SCHEMA -->
+<section class="section" style="background: var(--gray-light);">
+  <div class="section-header">
+    <div class="section-label">05 — Data Architecture</div>
+    <h2 class="section-title">Firestore Schema</h2>
+  </div>
+  
+  <div class="schema-section">
+    <div class="schema-title">Collection: users</div>
+    <div class="schema-code">
+<pre><span class="type">users</span>/<span class="string">{uid}</span>
+{
+  <span class="field">uid</span>: <span class="type">String</span>,           <span class="comment">// Firebase Auth UID</span>
+  <span class="field">name</span>: <span class="type">String</span>,
+  <span class="field">phone</span>: <span class="type">String</span>,          <span class="comment">// +8801XXXXXXXXX</span>
+  <span class="field">photoUrl</span>: <span class="type">String</span>,
+  <span class="field">district</span>: <span class="type">String</span>,
+  <span class="field">upazila</span>: <span class="type">String</span>,
+  <span class="field">fcmToken</span>: <span class="type">String</span>,
+  <span class="field">createdAt</span>: <span class="type">Timestamp</span>,
+  <span class="field">referralCode</span>: <span class="type">String</span>,
+  <span class="field">credits</span>: <span class="type">Number</span>
+}</pre>
+    </div>
+  </div>
+  
+  <div class="schema-section">
+    <div class="schema-title">Collection: koshais</div>
+    <div class="schema-code">
+<pre><span class="type">koshais</span>/<span class="string">{uid}</span>
+{
+  <span class="field">uid</span>: <span class="type">String</span>,
+  <span class="field">name</span>: <span class="type">String</span>, <span class="field">phone</span>: <span class="type">String</span>, <span class="field">photoUrl</span>: <span class="type">String</span>,
+  <span class="field">nidUrl</span>: <span class="type">String</span>, <span class="field">tradeCertUrl</span>: <span class="type">String</span>,
+  <span class="field">district</span>: <span class="type">String</span>, <span class="field">upazila</span>: <span class="type">String</span>,
+  <span class="field">ratePerCow</span>: <span class="type">Number</span>, <span class="field">ratePerGoat</span>: <span class="type">Number</span>,
+  <span class="field">status</span>: <span class="type">String</span>,        <span class="comment">// available | busy | offline</span>
+  <span class="field">isVerified</span>: <span class="type">Boolean</span>,
+  <span class="field">rating</span>: <span class="type">Number</span>,        <span class="comment">// 0.0–5.0</span>
+  <span class="field">totalJobs</span>: <span class="type">Number</span>,
+  <span class="field">lat</span>: <span class="type">Number</span>, <span class="field">lng</span>: <span class="type">Number</span>,
+  <span class="field">surgeMultiplier</span>: <span class="type">Number</span>
+}</pre>
+    </div>
+  </div>
+  
+  <div class="schema-section">
+    <div class="schema-title">Collection: bookings</div>
+    <div class="schema-code">
+<pre><span class="type">bookings</span>/<span class="string">{bookingId}</span>
+{
+  <span class="field">userId</span>: <span class="type">String</span>, <span class="field">koshaiId</span>: <span class="type">String</span>,
+  <span class="field">address</span>: <span class="type">String</span>, <span class="field">lat</span>: <span class="type">Number</span>, <span class="field">lng</span>: <span class="type">Number</span>,
+  <span class="field">date</span>: <span class="type">Timestamp</span>, <span class="field">slot</span>: <span class="type">String</span>,
+  <span class="field">animalTypes</span>: { <span class="field">cow</span>: <span class="type">Number</span>, <span class="field">goat</span>: <span class="type">Number</span> },
+  <span class="field">rateBreakdown</span>: { <span class="field">total</span>: <span class="type">Number</span>, <span class="field">surgeMultiplier</span>: <span class="type">Number</span> },
+  <span class="field">depositPaid</span>: <span class="type">Number</span>,
+  <span class="field">status</span>: <span class="type">String</span>  <span class="comment">// pending|confirmed|en_route|arrived|completed|cancelled</span>
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENS -->
+<section id="screens" class="section">
+  <div class="section-header">
+    <div class="section-label">06 — Screen List</div>
+    <h2 class="section-title">Complete Navigation</h2>
+  </div>
+  
+  <h3 style="margin-bottom: 16px; color: var(--primary);">User Screens (12)</h3>
+  <table class="screens-table">
+    <thead>
+      <tr>
+        <th>Screen</th>
+        <th>Component</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="screen-name">Splash</td><td><span class="screen-type activity">Activity</span></td><td>Logo, check auth state, route to Auth or Home</td></tr>
+      <tr><td class="screen-name">Role Select</td><td><span class="screen-type fragment">Fragment</span></td><td>Are you a User or a Koshai?</td></tr>
+      <tr><td class="screen-name">Phone Input</td><td><span class="screen-type fragment">Fragment</span></td><td>Enter +88 number, send OTP</td></tr>
+      <tr><td class="screen-name">OTP Verify</td><td><span class="screen-type fragment">Fragment</span></td><td>6-digit OTP input, resend timer</td></tr>
+      <tr><td class="screen-name">Home (map)</td><td><span class="screen-type fragment">Fragment</span></td><td>Google Map with koshai pins, search bar</td></tr>
+      <tr><td class="screen-name">Search/Filter</td><td><span class="screen-type fragment">Fragment</span></td><td>Filter by district, upazila, animal, price</td></tr>
+      <tr><td class="screen-name">Koshai Profile</td><td><span class="screen-type fragment">Fragment</span></td><td>Photo, rating, rates, slots, Book button</td></tr>
+      <tr><td class="screen-name">Booking Form</td><td><span class="screen-type fragment">Fragment</span></td><td>Date, slot, address, animal count</td></tr>
+      <tr><td class="screen-name">Payment</td><td><span class="screen-type fragment">Fragment</span></td><td>bKash/Nagad SDK, deposit confirmation</td></tr>
+      <tr><td class="screen-name">Live Tracker</td><td><span class="screen-type fragment">Fragment</span></td><td>Real-time status + koshai location</td></tr>
+      <tr><td class="screen-name">My Bookings</td><td><span class="screen-type fragment">Fragment</span></td><td>List of all bookings with status</td></tr>
+      <tr><td class="screen-name">Write Review</td><td><span class="screen-type fragment">Fragment</span></td><td>Stars, comment, optional photo</td></tr>
+    </tbody>
+  </table>
+  
+  <h3 style="margin: 32px 0 16px; color: var(--primary);">Koshai Screens (10)</h3>
+  <table class="screens-table">
+    <thead>
+      <tr>
+        <th>Screen</th>
+        <th>Component</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="screen-name">Registration</td><td><span class="screen-type fragment">Fragment</span></td><td>Name, NID upload, photo, district, rates</td></tr>
+      <tr><td class="screen-name">Pending Approval</td><td><span class="screen-type fragment">Fragment</span></td><td>Show waiting state until admin verifies</td></tr>
+      <tr><td class="screen-name">Dashboard</td><td><span class="screen-type fragment">Fragment</span></td><td>Incoming requests, today's schedule</td></tr>
+      <tr><td class="screen-name">Availability Toggle</td><td><span class="screen-type fragment">Fragment</span></td><td>Open / Busy / Offline switch</td></tr>
+      <tr><td class="screen-name">Booking Manager</td><td><span class="screen-type fragment">Fragment</span></td><td>Pending/confirmed, Accept/Decline</td></tr>
+      <tr><td class="screen-name">Booking Detail</td><td><span class="screen-type fragment">Fragment</span></td><td>Full info, chat, complete/cancel</td></tr>
+      <tr><td class="screen-name">In-app Chat</td><td><span class="screen-type fragment">Fragment</span></td><td>Message thread per booking</td></tr>
+      <tr><td class="screen-name">Earnings</td><td><span class="screen-type fragment">Fragment</span></td><td>Total earned, per-booking history</td></tr>
+      <tr><td class="screen-name">Leaderboard</td><td><span class="screen-type fragment">Fragment</span></td><td>District ranking, own position</td></tr>
+      <tr><td class="screen-name">My Profile</td><td><span class="screen-type fragment">Fragment</span></td><td>Edit rates, coverage, photo</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- CODE SAMPLE -->
+<section class="section" style="background: var(--gray-light);">
+  <div class="section-header">
+    <div class="section-label">07 — Sample Code</div>
+    <h2 class="section-title">Kotlin Data Models</h2>
+  </div>
+  
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-dot red"></span>
+      <span class="code-dot yellow"></span>
+      <span class="code-dot green"></span>
+      <span class="code-title">Koshai.kt</span>
+    </div>
+    <div class="code-content">
+<pre><span class="comment">// Koshai.kt</span>
+<span class="key">data class</span> <span class="type">Koshai</span>(
+  <span class="key">val</span> uid: <span class="type">String</span> = <span class="string">""</span>,
+  <span class="key">val</span> name: <span class="type">String</span> = <span class="string">""</span>,
+  <span class="key">val</span> phone: <span class="type">String</span> = <span class="string">""</span>,
+  <span class="key">val</span> photoUrl: <span class="type">String</span> = <span class="string">""</span>,
+  <span class="key">val</span> district: <span class="type">String</span> = <span class="string">""</span>,
+  <span class="key">val</span> upazila: <span class="type">String</span> = <span class="string">""</span>,
+  <span class="key">val</span> ratePerCow: <span class="type">Int</span> = <span class="number">0</span>,
+  <span class="key">val</span> ratePerGoat: <span class="type">Int</span> = <span class="number">0</span>,
+  <span class="key">val</span> status: <span class="type">String</span> = <span class="string">"offline"</span>,
+  <span class="key">val</span> isVerified: <span class="type">Boolean</span> = <span class="bool">false</span>,
+  <span class="key">val</span> rating: <span class="type">Double</span> = <span class="number">0.0</span>,
+  <span class="key">val</span> totalJobs: <span class="type">Int</span> = <span class="number">0</span>,
+  <span class="key">val</span> lat: <span class="type">Double</span> = <span class="number">0.0</span>,
+  <span class="key">val</span> lng: <span class="type">Double</span> = <span class="number">0.0</span>,
+  <span class="key">val</span> surgeMultiplier: <span class="type">Double</span> = <span class="number">1.0</span>
+)</pre>
+    </div>
+  </div>
+  
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-dot red"></span>
+      <span class="code-dot yellow"></span>
+      <span class="code-dot green"></span>
+      <span class="code-title">Booking.kt</span>
+    </div>
+    <div class="code-content">
+<pre><span class="comment">// Booking.kt</span>
+<span class="key">data class</span> <span class="type">Booking</span>(
+  <span class="key">val</span> id: <span class="type">String</span> = <span class="string">""</span>,
+  <span class="key">val</span> userId: <span class="type">String</span> = <span class="string">""</span>,
+  <span class="key">val</span> koshaiId: <span class="type">String</span> = <span class="string">""</span>,
+  <span class="key">val</span> address: <span class="type">String</span> = <span class="string">""</span>,
+  <span class="key">val</span> lat: <span class="type">Double</span> = <span class="number">0.0</span>,
+  <span class="key">val</span> lng: <span class="type">Double</span> = <span class="number">0.0</span>,
+  <span class="key">val</span> date: <span class="type">Timestamp</span>? = <span class="bool">null</span>,
+  <span class="key">val</span> slot: <span class="type">String</span> = <span class="string">""</span>,
+  <span class="key">val</span> animalTypes: <span class="type">AnimalTypes</span>? = <span class="bool">null</span>,
+  <span class="key">val</span> status: <span class="type">String</span> = <span class="string">"pending"</span>,
+  <span class="key">val</span> total: <span class="type">Int</span> = <span class="number">0</span>
+)</pre>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-content">
+    <h2>Koshai Finder Bangladesh</h2>
+    <p>Android Studio · Kotlin · Firebase · Google Maps SDK</p>
+    <div class="footer-links">
+      <a href="#" class="footer-link">Documentation</a>
+      <a href="#" class="footer-link">GitHub</a>
+      <a href="#" class="footer-link">Play Store</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+// Update active nav button on scroll
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop;
+    if (scrollY >= sectionTop - 100) {
+      current = section.getAttribute('id');
+    }
+  });
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.getAttribute('onclick')?.includes(current)) {
+      btn.classList.add('active');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
