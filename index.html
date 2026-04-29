@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koshai Finder — Complete Development Plan</title>
     
+    <!-- Favicon (SVG) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23059669' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2'/%3E%3Cpath d='M7 2v20'/%3E%3Cpath d='M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7'/%3E%3C/svg%3E">
+    
     <!-- SEO Meta Tags -->
     <meta name="description" content="Complete technical development plan for Koshai Finder Bangladesh. A two-sided marketplace for animal sacrifice services during Eid ul-Adha.">
     <meta name="keywords" content="Koshai Finder, Android, Kotlin, Firebase, Bangladesh, Eid ul-Adha, Marketplace">
@@ -16,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@0.400.0/dist/umd/lucide.min.js"></script>
     
     <style>
         :root {
@@ -42,6 +45,20 @@
             --radius-lg: 1.25rem;
             --header-height: 72px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Lucide Icons Fix */
+        .lucide {
+            width: 1.5rem;
+            height: 1.5rem;
+            stroke-width: 2;
+            vertical-align: middle;
+        }
+
+        .logo-icon .lucide {
+            width: 24px;
+            height: 24px;
+            stroke: white;
         }
 
         [data-theme="dark"] {
@@ -149,12 +166,48 @@
         .nav-links {
             display: flex;
             gap: 4px;
-            overflow-x: auto;
-            scrollbar-width: none;
             padding: 4px;
             background: var(--primary-light);
             border-radius: var(--radius-md);
             border: 1px solid var(--border);
+        }
+
+        /* Mobile Menu Toggle */
+        #menu-toggle {
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            #menu-toggle {
+                display: flex;
+            }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: calc(var(--header-height) + 10px);
+                left: 1.5rem;
+                right: 1.5rem;
+                flex-direction: column;
+                background: var(--surface);
+                padding: 1rem;
+                box-shadow: var(--shadow-lg);
+                border: 1px solid var(--border);
+                z-index: 1001;
+            }
+            .nav-links.show {
+                display: flex;
+                animation: slideDown 0.3s ease-out;
+            }
+            .nav-btn {
+                width: 100%;
+                text-align: left;
+                padding: 12px 16px;
+            }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .nav-links::-webkit-scrollbar {
@@ -851,6 +904,9 @@
             </nav>
 
             <div class="controls">
+                <button class="icon-btn" id="menu-toggle" title="Menu">
+                    <i data-lucide="menu"></i>
+                </button>
                 <button class="icon-btn" id="search-trigger" title="Search (Alt+S)">
                     <i data-lucide="search"></i>
                 </button>
@@ -1378,8 +1434,37 @@
     </footer>
 
     <script>
-        // Initialize Lucide Icons
-        lucide.createIcons();
+        // Initialize Lucide Icons with safety check
+        function initIcons() {
+            if (window.lucide) {
+                lucide.createIcons();
+            } else {
+                console.error("Lucide not loaded");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initIcons);
+
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navLinks.classList.toggle('show');
+            menuToggle.innerHTML = navLinks.classList.contains('show') 
+                ? '<i data-lucide="x"></i>' 
+                : '<i data-lucide="menu"></i>';
+            lucide.createIcons();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+                navLinks.classList.remove('show');
+                menuToggle.innerHTML = '<i data-lucide="menu"></i>';
+                lucide.createIcons();
+            }
+        });
 
         // Theme Toggle
         const themeToggle = document.getElementById('theme-toggle');
