@@ -1,1190 +1,1536 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Koshai Finder — Complete Development Plan</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --primary: #1D6B45;
-  --primary-light: #E8F5EE;
-  --primary-dark: #145232;
-  --accent: #1A5F9E;
-  --accent-light: #EBF3FB;
-  --warning: #BA7517;
-  --warning-light: #FFF8E7;
-  --danger: #A32D2D;
-  --danger-light: #FBEAEA;
-  --dark: #1A1A1A;
-  --gray: #555555;
-  --gray-light: #F5F5F5;
-  --border: #E0E0E0;
-  --shadow: 0 4px 20px rgba(0,0,0,0.08);
-  --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koshai Finder — Complete Development Plan</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Complete technical development plan for Koshai Finder Bangladesh. A two-sided marketplace for animal sacrifice services during Eid ul-Adha.">
+    <meta name="keywords" content="Koshai Finder, Android, Kotlin, Firebase, Bangladesh, Eid ul-Adha, Marketplace">
+    <meta name="author" content="Antigravity AI">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --primary: #059669;
+            --primary-hover: #047857;
+            --primary-light: #ecfdf5;
+            --secondary: #0891b2;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --glass: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1.25rem;
+            --header-height: 72px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-* { box-sizing: border-box; margin: 0; padding: 0 }
-html { scroll-behavior: smooth }
-body { font-family: 'IBM Plex Sans', -apple-system, sans-serif; background: #FAFAFA; color: var(--dark); line-height: 1.6 }
+        [data-theme="dark"] {
+            --background: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --glass: rgba(15, 23, 42, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --primary-light: rgba(5, 150, 105, 0.1);
+        }
 
-/* Header */
-.header { position: fixed; top: 0; left: 0; right: 0; height: 64px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; z-index: 1000 }
-.logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.1rem }
-.logo-icon { width: 36px; height: 36px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem }
-.nav-links { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 }
-.nav-btn { padding: 8px 16px; border: none; background: transparent; color: var(--gray); font-size: 0.85rem; font-weight: 500; cursor: pointer; border-radius: 6px; transition: all 0.2s; white-space: nowrap }
-.nav-btn:hover, .nav-btn.active { background: var(--primary-light); color: var(--primary) }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-/* Hero */
-.hero { padding: 120px 2rem 60px; text-align: center; background: linear-gradient(135deg, #fff 0%, var(--primary-light) 100%); position: relative; overflow: hidden }
-.hero::before { content: ''; position: absolute; top: -30%; right: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(29,107,69,0.1) 0%, transparent 70%); border-radius: 50% }
-.hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: white; border-radius: 20px; font-size: 0.85rem; color: var(--gray); box-shadow: var(--shadow); margin-bottom: 20px }
-.hero-badge span { color: var(--primary); font-weight: 600 }
-.hero h1 { font-size: 3rem; font-weight: 700; color: var(--dark); margin-bottom: 12px; letter-spacing: -1px }
-.hero h1 .highlight { color: var(--primary); position: relative }
-.hero h1 .highlight::after { content: ''; position: absolute; bottom: 4px; left: 0; right: 0; height: 8px; background: var(--primary-light); z-index: -1; border-radius: 4px }
-.hero-subtitle { font-size: 1.1rem; color: var(--gray); max-width: 600px; margin: 0 auto 32px }
-.hero-stats { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap }
-.stat-item { text-align: center }
-.stat-value { font-size: 2.2rem; font-weight: 700; color: var(--primary) }
-.stat-label { font-size: 0.85rem; color: var(--gray) }
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--header-height);
+        }
 
-/* Sections */
-.section { padding: 60px 2rem; max-width: 1200px; margin: 0 auto }
-.section-header { margin-bottom: 36px }
-.section-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); margin-bottom: 6px }
-.section-title { font-size: 1.75rem; font-weight: 700; color: var(--dark) }
+        body {
+            font-family: 'Outfit', -apple-system, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease;
+        }
 
-/* Cards */
-.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px }
-.card { background: white; border-radius: 14px; padding: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); transition: all 0.3s }
-.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg) }
-.card-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 14px }
-.card-icon.green { background: var(--primary-light); color: var(--primary) }
-.card-icon.blue { background: var(--accent-light); color: var(--accent) }
-.card-icon.amber { background: var(--warning-light); color: var(--warning) }
-.card-icon.red { background: var(--danger-light); color: var(--danger) }
-.card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px }
-.card p { font-size: 0.9rem; color: var(--gray) }
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--background);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
 
-/* Tech Grid */
-.tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px }
-.tech-item { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; transition: all 0.2s }
-.tech-item:hover { border-color: var(--primary); background: var(--primary-light) }
-.tech-item .icon { font-size: 1.8rem; margin-bottom: 6px }
-.tech-item .name { font-weight: 600; font-size: 0.9rem }
-.tech-item .desc { font-size: 0.75rem; color: var(--gray); margin-top: 4px }
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
 
-/* Pipeline */
-.pipeline { display: flex; gap: 20px; overflow-x: auto; padding: 16px 0; scroll-snap-type: x mandatory }
-.pipeline-phase { min-width: 300px; background: white; border-radius: 14px; padding: 20px; box-shadow: var(--shadow); border: 1px solid var(--border); scroll-snap-align: start }
-.phase-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px }
-.phase-badge { padding: 4px 10px; border-radius: 16px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase }
-.phase-badge.mvp { background: var(--accent-light); color: var(--accent) }
-.phase-badge.trust { background: var(--primary-light); color: var(--primary) }
-.phase-badge.growth { background: var(--warning-light); color: var(--warning) }
-.phase-badge.scale { background: var(--danger-light); color: var(--danger) }
-.phase-title { font-weight: 600; font-size: 0.95rem }
-.phase-duration { font-size: 0.8rem; color: var(--gray); margin-bottom: 12px }
-.feature-list { list-style: none }
-.feature-list li { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; display: flex; align-items: flex-start; gap: 8px }
-.feature-list li:last-child { border-bottom: none }
-.feature-check { width: 18px; height: 18px; border-radius: 50%; background: var(--gray-light); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; flex-shrink: 0; margin-top: 2px }
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+        }
 
-/* Code Blocks */
-.code-block { background: #1E1E1E; border-radius: 10px; overflow: hidden; margin: 14px 0 }
-.code-header { background: #2D2D2D; padding: 10px 14px; display: flex; align-items: center; gap: 6px }
-.code-dot { width: 10px; height: 10px; border-radius: 50% }
-.code-dot.red { background: #FF5F56 }
-.code-dot.yellow { background: #FFBD2E }
-.code-dot.green { background: #27C93F }
-.code-title { color: #888; font-size: 0.8rem; margin-left: 6px }
-.code-content { padding: 14px; overflow-x: auto }
-.code-content pre { font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: #D4D4D4; line-height: 1.5; margin: 0; white-space: pre-wrap }
-.code-content .key { color: #569CD6 }
-.code-content .type { color: #4EC9B0 }
-.code-content .string { color: #CE9178 }
-.code-content .number { color: #B5CEA8 }
-.code-content .comment { color: #6A9955 }
-.code-content .func { color: #DCDCAA }
+        .header.scrolled {
+            box-shadow: var(--shadow);
+        }
 
-/* Tables */
-.data-table { width: 100%; border-collapse: collapse; background: white; border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); font-size: 0.85rem }
-.data-table th { background: var(--primary); color: white; padding: 14px 16px; text-align: left; font-weight: 600 }
-.data-table td { padding: 12px 16px; border-bottom: 1px solid var(--border) }
-.data-table tr:last-child td { border-bottom: none }
-.data-table tr:hover td { background: var(--primary-light) }
-.table-row-alt { background: var(--gray-light) }
+        .nav-content {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-/* Schema */
-.schema-section { margin-bottom: 28px }
-.schema-title { font-size: 1rem; font-weight: 600; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 6px }
-.schema-code { background: #252526; border-radius: 8px; padding: 14px; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: #D4D4D4; overflow-x: auto }
-.schema-code .field { color: #9CDCFE }
-.schema-code .type { color: #4EC9B0 }
-.schema-code .string { color: #CE9178 }
-.schema-code .number { color: #B5CEA8 }
-.schema-code .bool { color: #569CD6 }
-.schema-code .comment { color: #6A9955 }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
 
-/* Screen Tags */
-.screen-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 500 }
-.screen-type.activity { background: var(--accent-light); color: var(--accent) }
-.screen-type.fragment { background: var(--primary-light); color: var(--primary) }
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: var(--shadow);
+        }
 
-/* Footer */
-.footer { background: var(--dark); color: white; padding: 48px 2rem; text-align: center }
-.footer-content { max-width: 600px; margin: 0 auto }
-.footer h2 { font-size: 1.3rem; margin-bottom: 12px }
-.footer p { color: #888; margin-bottom: 20px; font-size: 0.9rem }
-.footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap }
-.footer-link { color: #888; text-decoration: none; font-size: 0.85rem; transition: color 0.2s }
-.footer-link:hover { color: white }
+        .nav-links {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: 4px;
+            background: var(--primary-light);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+        }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .hero h1 { font-size: 2.2rem }
-  .hero-stats { gap: 20px }
-  .stat-value { font-size: 1.8rem }
-  .header { padding: 0 1rem }
-  .nav-links { display: none }
-  .section { padding: 40px 1rem }
-  .card-grid { grid-template-columns: 1fr }
-}
+        .nav-links::-webkit-scrollbar {
+            display: none;
+        }
 
-/* Color Box */
-.color-box { background: var(--primary-light); border-left: 4px solid var(--primary); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0 }
-.color-box p { color: var(--primary-dark); font-weight: 500 }
+        .nav-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: calc(var(--radius-md) - 4px);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
 
-/* List Styles */
-.bullet-list { list-style: none }
-.bullet-list li { padding: 8px 0; padding-left: 24px; position: relative; font-size: 0.9rem; color: var(--gray) }
-.bullet-list li::before { content: '•'; position: absolute; left: 8px; color: var(--primary); font-weight: bold }
-.numbered-list { list-style: none; counter-reset: item }
-.numbered-list li { padding: 8px 0; padding-left: 32px; position: relative; font-size: 0.9rem; color: var(--gray) }
-.numbered-list li::before { counter-increment: item; content: counter(item) "."; position: absolute; left: 8px; color: var(--primary); font-weight: 600 }
+        .nav-btn:hover {
+            color: var(--primary);
+            background: rgba(255, 255, 255, 0.5);
+        }
 
-/* Folder Structure */
-.folder-tree { font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; background: #252526; border-radius: 8px; padding: 16px; color: #D4D4D4 }
-.folder-tree .folder { color: #569CD6 }
-.folder-tree .file { color: #CE9178 }
-.folder-tree .indent { padding-left: 20px; display: block }
-</style>
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        .icon-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* Hero */
+        .hero {
+            padding: calc(var(--header-height) + 80px) 0 80px;
+            text-align: center;
+            background: radial-gradient(circle at top right, var(--primary-light), transparent),
+                        radial-gradient(circle at bottom left, rgba(8, 145, 178, 0.05), transparent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23059669' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--surface);
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .hero-badge span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 16px;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 48px;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            backdrop-filter: blur(8px);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--glass-border);
+            min-width: 140px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Sections */
+        .section {
+            padding: 100px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-header {
+            margin-bottom: 48px;
+            text-align: left;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.01em;
+        }
+
+        /* Progress Bar */
+        #progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1001;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            margin: 24px 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            font-size: 0.9375rem;
+        }
+
+        .data-table th {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 16px 20px;
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .data-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover td {
+            background: var(--primary-light);
+        }
+
+        /* Code Blocks */
+        .code-container {
+            position: relative;
+            margin: 24px 0;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .code-header {
+            background: #1e293b;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #334155;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .code-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+
+        .code-title {
+            color: #94a3b8;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-family: inherit;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            color: white;
+            background: #334155;
+        }
+
+        .code-content {
+            background: #0f172a;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .code-content pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: #e2e8f0;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Syntax Highlighting */
+        .key { color: #7dd3fc; }
+        .type { color: #fbbf24; }
+        .string { color: #34d399; }
+        .number { color: #f472b6; }
+        .comment { color: #64748b; font-style: italic; }
+        .func { color: #a5b4fc; }
+        .bool { color: #fb7185; }
+
+        /* Schema Sections */
+        .schema-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin-bottom: 24px;
+            border-left: 4px solid var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .schema-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+        }
+
+        /* Pipeline */
+        .pipeline-container {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            padding: 24px 4px;
+            scrollbar-width: thin;
+        }
+
+        .pipeline-card {
+            min-width: 300px;
+            flex: 1;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .pipeline-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .phase-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .badge-mvp { background: #ecfdf5; color: #059669; }
+        .badge-trust { background: #eff6ff; color: #2563eb; }
+        .badge-growth { background: #fffbeb; color: #d97706; }
+        .badge-scale { background: #fef2f2; color: #dc2626; }
+
+        .phase-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .phase-duration {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9375rem;
+        }
+
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Screen Tags */
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .tag-activity { background: #e0f2fe; color: #0369a1; }
+        .tag-fragment { background: #dcfce7; color: #166534; }
+
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            color: white;
+            padding: 80px 0 40px;
+        }
+
+        .footer-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer h2 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .footer p {
+            color: #94a3b8;
+            margin-bottom: 32px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .footer-link {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        .copyright {
+            font-size: 0.875rem;
+            color: #64748b;
+            border-top: 1px solid #1e293b;
+            padding-top: 40px;
+        }
+
+        /* Search Overlay */
+        #search-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            padding-top: 100px;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
+            border: none;
+            background: var(--surface);
+            font-size: 1.25rem;
+            font-family: inherit;
+            box-shadow: var(--shadow-lg);
+            outline: 2px solid var(--primary);
+        }
+
+        .search-results {
+            margin-top: 20px;
+            max-height: 50vh;
+            overflow-y: auto;
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .result-item {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .result-item:hover {
+            background: var(--primary-light);
+        }
+
+        .result-title {
+            font-weight: 700;
+            display: block;
+        }
+
+        .result-snippet {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 3.5rem; }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.75rem; }
+            .hero-stats { gap: 16px; }
+            .stat-card { min-width: 120px; padding: 16px; }
+            .stat-value { font-size: 2rem; }
+            .section-title { font-size: 2rem; }
+        }
+
+        /* Custom Box */
+        .info-box {
+            background: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            padding: 24px;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 32px 0;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .info-box i {
+            color: var(--primary);
+            margin-top: 4px;
+        }
+
+        .info-box p {
+            color: var(--text);
+            font-weight: 500;
+        }
+    </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="logo">
-    <div class="logo-icon">🔪</div>
-    <span>Koshai Finder</span>
-  </div>
-  <nav class="nav-links">
-    <button class="nav-btn active" onclick="scrollTo('cover')">Cover</button>
-    <button class="nav-btn" onclick="scrollTo('summary')">Summary</button>
-    <button class="nav-btn" onclick="scrollTo('problem')">Problem</button>
-    <button class="nav-btn" onclick="scrollTo('tech')">Tech Stack</button>
-    <button class="nav-btn" onclick="scrollTo('schema')">Schema</button>
-    <button class="nav-btn" onclick="scrollTo('screens')">Screens</button>
-    <button class="nav-btn" onclick="scrollTo('code')">Code</button>
-    <button class="nav-btn" onclick="scrollTo('functions')">Cloud Functions</button>
-    <button class="nav-btn" onclick="scrollTo('features')">Features</button>
-    <button class="nav-btn" onclick="scrollTo('pipeline')">Pipeline</button>
-    <button class="nav-btn" onclick="scrollTo('structure')">Structure</button>
-    <button class="nav-btn" onclick="scrollTo('cicd')">CI/CD</button>
-    <button class="nav-btn" onclick="scrollTo('monetization')">Revenue</button>
-    <button class="nav-btn" onclick="scrollTo('risks')">Risks</button>
-  </nav>
-</header>
+    <div id="progress-container"><div id="progress-bar"></div></div>
 
-<!-- HERO / COVER -->
-<section id="cover" class="hero">
-  <div class="hero-badge">📋 Complete Development Plan · <span>24 Weeks</span> Timeline</div>
-  <h1>Koshai <span class="highlight">Finder</span></h1>
-  <p class="hero-subtitle">কোশাই ফাইন্ডার বাংলাদেশ — Complete Product, Technical & Pipeline Document</p>
-  <div class="hero-stats">
-    <div class="stat-item"><div class="stat-value">18</div><div class="stat-label">Features</div></div>
-    <div class="stat-item"><div class="stat-value">4</div><div class="stat-label">Phases</div></div>
-    <div class="stat-item"><div class="stat-value">22</div><div class="stat-label">Screens</div></div>
-    <div class="stat-item"><div class="stat-value">24</div><div class="stat-label">Weeks</div></div>
-  </div>
-</section>
+    <header class="header" id="header">
+        <div class="container nav-content">
+            <a href="#cover" class="logo">
+                <div class="logo-icon"><i data-lucide="knife"></i></div>
+                <span>Koshai Finder</span>
+            </a>
+            
+            <nav class="nav-links">
+                <button class="nav-btn active" data-section="cover">Cover</button>
+                <button class="nav-btn" data-section="summary">Summary</button>
+                <button class="nav-btn" data-section="problem">Problem</button>
+                <button class="nav-btn" data-section="tech">Tech</button>
+                <button class="nav-btn" data-section="schema">Architecture</button>
+                <button class="nav-btn" data-section="screens">Screens</button>
+                <button class="nav-btn" data-section="code">Code</button>
+                <button class="nav-btn" data-section="features">Features</button>
+                <button class="nav-btn" data-section="pipeline">Pipeline</button>
+                <button class="nav-btn" data-section="monetization">Revenue</button>
+                <button class="nav-btn" data-section="risks">Risks</button>
+            </nav>
 
-<!-- 1. EXECUTIVE SUMMARY -->
-<section id="summary" class="section">
-  <div class="section-header"><div class="section-label">01 — Executive Summary</div><h2 class="section-title">1. Executive Summary</h2></div>
-  <p style="font-size: 0.95rem; color: var(--gray); margin-bottom: 24px; line-height: 1.7;">
-    During Eid ul-Adha, millions of Bangladeshi families sacrifice animals (cows, goats, sheep) as part of religious observance. Finding a skilled and available koshai (animal slaughterer) becomes extremely difficult — demand spikes in a window of just 24–48 hours, communication is entirely word-of-mouth, and no-shows are common. Families waste hours searching, and skilled koshais lose potential income due to poor scheduling.
-  </p>
-  <p style="font-size: 0.95rem; color: var(--gray); margin-bottom: 24px; line-height: 1.7;">
-    Koshai Finder solves this with a two-sided marketplace app: users find, book, and pay verified koshais near them; koshais manage their schedule, availability, and earnings — all from a smartphone. Built on Android (Kotlin) with Firebase as the backend, the app targets the 170+ million population of Bangladesh, with peak use during the three-day Eid period.
-  </p>
-  <table class="data-table">
-    <tr><th>Metric</th><th>Value</th></tr>
-    <tr><td>Platform</td><td>Android (minSDK 21 — covers 98% of Bangladeshi devices)</td></tr>
-    <tr class="table-row-alt"><td>Language</td><td>Kotlin</td></tr>
-    <tr><td>Backend</td><td>Firebase (Auth, Firestore, Realtime DB, FCM, Storage)</td></tr>
-    <tr class="table-row-alt"><td>Maps</td><td>Google Maps SDK + Google Places API</td></tr>
-    <tr><td>Payment</td><td>bKash & Nagad payment gateway (Phase 3)</td></tr>
-    <tr class="table-row-alt"><td>Total screens</td><td>~22 screens (user side: 12, koshai side: 10)</td></tr>
-    <tr><td>Total features</td><td>18 features across 4 release phases</td></tr>
-    <tr class="table-row-alt"><td>Timeline</td><td>24 weeks (6 weeks per phase)</td></tr>
-    <tr><td>Primary language</td><td>Bangla (বাংলা) UI with English admin panel</td></tr>
-  </table>
-</section>
+            <div class="controls">
+                <button class="icon-btn" id="search-trigger" title="Search (Alt+S)">
+                    <i data-lucide="search"></i>
+                </button>
+                <button class="icon-btn" id="theme-toggle" title="Toggle Theme">
+                    <i data-lucide="moon"></i>
+                </button>
+                <a href="#" class="icon-btn" title="GitHub">
+                    <i data-lucide="github"></i>
+                </a>
+            </div>
+        </div>
+    </header>
 
-<!-- 2. PROBLEM & SOLUTION -->
-<section id="problem" class="section">
-  <div class="section-header"><div class="section-label">02 — Problem & Solution</div><h2 class="section-title">2. Problem Statement & Solution</h2></div>
-  
-  <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--danger); margin-bottom: 16px;">2.1 The Problem</h3>
-  <ul class="bullet-list">
-    <li>Demand for koshais spikes to 10–50x normal in a 24-hour window during Eid ul-Adha</li>
-    <li>No centralized platform to find, verify, or book koshais in Bangladesh</li>
-    <li>Word-of-mouth only — families rely on neighbors or mosque connections</li>
-    <li>Double bookings and no-shows are widespread, leaving families stranded on Eid morning</li>
-    <li>Koshais cannot manage multiple bookings efficiently — no scheduling tools</li>
-    <li>No price transparency — users often overpay or get quoted unfair rates last minute</li>
-    <li>No trust mechanism — users cannot verify a koshai's skill, hygiene, or legitimacy</li>
-  </ul>
-  
-  <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--primary); margin: 32px 0 16px;">2.2 The Solution</h3>
-  <ul class="bullet-list">
-    <li>Two-sided marketplace: users book, koshais accept — all inside one app</li>
-    <li>Slot-based scheduling prevents double booking and manages Eid-morning rush</li>
-    <li>Verified badge system (NID + trade certificate) builds trust</li>
-    <li>In-app payment with bKash/Nagad eliminates cash ambiguity and reduces no-shows</li>
-    <li>Ratings and reviews create accountability and surface top performers</li>
-    <li>Real-time availability and live tracking give users confidence on the day</li>
-  </ul>
-</section>
+    <!-- Search Overlay -->
+    <div id="search-overlay">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search sections, features, code..." id="search-input">
+            <div class="search-results" id="search-results"></div>
+        </div>
+    </div>
 
-<!-- 3. TECH STACK -->
-<section id="tech" class="section">
-  <div class="section-header"><div class="section-label">03 — Technology Stack</div><h2 class="section-title">3. Full Technology Stack</h2></div>
-  <div class="tech-grid">
-    <div class="tech-item"><div class="icon">📓</div><div class="name">Android Studio</div><div class="desc">Hedgehog+ IDE</div></div>
-    <div class="tech-item"><div class="icon">🦄</div><div class="name">Kotlin</div><div class="desc">1.9+ Language</div></div>
-    <div class="tech-item"><div class="icon">🎨</div><div class="name">Material Design 3</div><div class="desc">UI Framework</div></div>
-    <div class="tech-item"><div class="icon">🧭</div><div class="name">Navigation Component</div><div class="desc">Jetpack</div></div>
-    <div class="tech-item"><div class="icon">🏗️</div><div class="name">MVVM</div><div class="desc">Architecture</div></div>
-    <div class="tech-item"><div class="icon">🔐</div><div class="name">Firebase Auth</div><div class="desc">Phone OTP</div></div>
-    <div class="tech-item"><div class="icon">🗄️</div><div class="name">Cloud Firestore</div><div class="desc">Database</div></div>
-    <div class="tech-item"><div class="icon">⚡</div><div class="name">Realtime DB</div><div class="desc">Live data</div></div>
-    <div class="tech-item"><div class="icon">🔔</div><div class="name">FCM</div><div class="desc">Push alerts</div></div>
-    <div class="tech-item"><div class="icon">📁</div><div class="name">Firebase Storage</div><div class="desc">File storage</div></div>
-    <div class="tech-item"><div class="icon">☁️</div><div class="name">Cloud Functions</div><div class="desc">Backend logic</div></div>
-    <div class="tech-item"><div class="icon">🗺️</div><div class="name">Google Maps SDK</div><div class="desc">Location</div></div>
-    <div class="tech-item"><div class="icon">📍</div><div class="name">Play Services Location</div><div class="desc">GPS</div></div>
-    <div class="tech-item"><div class="icon">💰</div><div class="name">bKash API</div><div class="desc">Payment</div></div>
-    <div class="tech-item"><div class="icon">🖼️</div><div class="name">Glide 4.x</div><div class="desc">Image loading</div></div>
-    <div class="tech-item"><div class="icon">🔌</div><div class="name">Retrofit 2</div><div class="desc">HTTP</div></div>
-    <div class="tech-item"><div class="icon">💉</div><div class="name">Hilt</div><div class="desc">DI</div></div>
-    <div class="tech-item"><div class="icon">🔄</div><div class="name">Kotlin Coroutines</div><div class="desc">Async</div></div>
-    <div class="tech-item"><div class="icon">🧪</div><div class="name">JUnit + Espresso</div><div class="desc">Testing</div></div>
-    <div class="tech-item"><div class="icon">🔄</div><div class="name">GitHub Actions</div><div class="desc">CI/CD</div></div>
-  </div>
-</section>
+    <!-- HERO -->
+    <section id="cover" class="hero">
+        <div class="container">
+            <div class="hero-badge">
+                <i data-lucide="calendar"></i>
+                Complete Development Plan · <span>24 Weeks</span> Timeline
+            </div>
+            <h1>Koshai <span class="highlight">Finder</span></h1>
+            <p class="hero-subtitle">The first digital marketplace for animal sacrifice services in Bangladesh. Professional, verified, and reliable.</p>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <span class="stat-value">18</span>
+                    <span class="stat-label">Features</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">4</span>
+                    <span class="stat-label">Phases</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">22</span>
+                    <span class="stat-label">Screens</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">24</span>
+                    <span class="stat-label">Weeks</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- 4. FIRESTORE SCHEMA -->
-<section id="schema" class="section" style="background: var(--gray-light);">
-  <div class="section-header"><div class="section-label">04 — Data Architecture</div><h2 class="section-title">4. Complete Firebase Data Architecture</h2></div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin-bottom: 12px;">4.1 Firestore Collections Schema</h3>
-  
-  <div class="schema-section">
-    <div class="schema-title">Collection: users</div>
-    <div class="schema-code">users/{uid}
+    <!-- 1. EXECUTIVE SUMMARY -->
+    <section id="summary" class="section reveal">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">01 — Executive Summary</div>
+                <h2 class="section-title">Project Overview</h2>
+            </div>
+            
+            <div class="card" style="margin-bottom: 48px; border-left: 6px solid var(--primary);">
+                <p style="font-size: 1.125rem; color: var(--text); line-height: 1.8;">
+                    During Eid ul-Adha, millions of Bangladeshi families sacrifice animals. Finding a skilled koshai becomes a logistical nightmare. 
+                    <strong>Koshai Finder</strong> bridges this gap with a modern two-sided marketplace. 
+                    Users can book verified professionals, and koshais can manage their peak-demand schedules with ease.
+                </p>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Metric</th><th>Details</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Platform</td><td>Android (minSDK 21 — 98% coverage)</td></tr>
+                        <tr><td>Language</td><td>Kotlin 1.9+</td></tr>
+                        <tr><td>Backend</td><td>Firebase (Firestore, RTDB, FCM, Functions)</td></tr>
+                        <tr><td>Maps</td><td>Google Maps SDK + Places API</td></tr>
+                        <tr><td>Payment</td><td>bKash & Nagad (Phase 3)</td></tr>
+                        <tr><td>Timeline</td><td>24 Weeks (6 weeks per phase)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. PROBLEM & SOLUTION -->
+    <section id="problem" class="section reveal">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">02 — Problem & Solution</div>
+                <h2 class="section-title">The Challenge & Our Answer</h2>
+            </div>
+            
+            <div class="card-grid">
+                <div class="card" style="border-top: 4px solid var(--danger);">
+                    <div class="card-icon" style="background: #fef2f2; color: #dc2626;"><i data-lucide="alert-circle"></i></div>
+                    <h3>The Problem</h3>
+                    <ul class="feature-list">
+                        <li class="feature-item"><div class="feature-icon" style="background: #fef2f2; color: #dc2626;"><i data-lucide="x"></i></div>Extreme demand spikes (10-50x) in 24h.</li>
+                        <li class="feature-item"><div class="feature-icon" style="background: #fef2f2; color: #dc2626;"><i data-lucide="x"></i></div>No centralized verification or booking.</li>
+                        <li class="feature-item"><div class="feature-icon" style="background: #fef2f2; color: #dc2626;"><i data-lucide="x"></i></div>Double bookings and frequent no-shows.</li>
+                        <li class="feature-item"><div class="feature-icon" style="background: #fef2f2; color: #dc2626;"><i data-lucide="x"></i></div>Zero price transparency or trust.</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-top: 4px solid var(--success);">
+                    <div class="card-icon"><i data-lucide="check-circle"></i></div>
+                    <h3>The Solution</h3>
+                    <ul class="feature-list">
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Two-sided marketplace app.</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Slot-based scheduling (no conflicts).</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>NID-verified professionals.</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Real-time GPS tracking & chat.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. TECH STACK -->
+    <section id="tech" class="section reveal">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">03 — Technology Stack</div>
+                <h2 class="section-title">Modern Technical Foundation</h2>
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon" style="background: #eef2ff; color: #4f46e5;"><i data-lucide="smartphone"></i></div>
+                    <h3>Android Native</h3>
+                    <p>Kotlin 1.9, Jetpack Compose/MVVM, Hilt DI, Coroutines & Flow for a responsive UI.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon" style="background: #fffbeb; color: #d97706;"><i data-lucide="flame"></i></div>
+                    <h3>Firebase Cloud</h3>
+                    <p>Serverless architecture using Firestore, Realtime DB for live tracking, and Cloud Functions.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon" style="background: #f0fdf4; color: #16a34a;"><i data-lucide="map"></i></div>
+                    <h3>Google Maps</h3>
+                    <p>Advanced geolocation, dynamic pins, and route optimization for urban navigation.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon" style="background: #fdf2f8; color: #db2777;"><i data-lucide="credit-card"></i></div>
+                    <h3>FinTech</h3>
+                    <p>Direct integration with bKash and Nagad payment gateways for secure deposits.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. SCHEMA -->
+    <section id="schema" class="section reveal">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">04 — Architecture</div>
+                <h2 class="section-title">Data Schema & Security</h2>
+            </div>
+
+            <div class="schema-card">
+                <div class="schema-title"><i data-lucide="database"></i> Collection: users</div>
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
+                        <div class="code-title">users_schema.json</div>
+                        <button class="copy-btn"><i data-lucide="copy" style="width: 14px;"></i> Copy</button>
+                    </div>
+                    <div class="code-content">
+                        <pre>
 {
-  uid: String,               // Firebase Auth UID
-  name: String,              // Full name
-  phone: String,             // +8801XXXXXXXXX
-  photoUrl: String,          // Firebase Storage URL
-  district: String,          // e.g. Narayanganj
-  upazila: String,           // Sub-district
-  fcmToken: String,          // For push notifications
-  createdAt: Timestamp,
-  referralCode: String,      // Unique invite code
-  referredBy: String,        // UID of referrer
-  credits: Number            // Discount credits in BDT
-}</div>
-  </div>
-  
-  <div class="schema-section">
-    <div class="schema-title">Collection: koshais</div>
-    <div class="schema-code">koshais/{uid}
+  <span class="key">"uid"</span>: <span class="type">"String"</span>,       <span class="comment">// Firebase Auth UID</span>
+  <span class="key">"name"</span>: <span class="type">"String"</span>,      <span class="comment">// Full name</span>
+  <span class="key">"phone"</span>: <span class="type">"String"</span>,     <span class="comment">// +8801XXXXXXXXX</span>
+  <span class="key">"fcmToken"</span>: <span class="type">"String"</span>,  <span class="comment">// Push notifications</span>
+  <span class="key">"credits"</span>: <span class="number">0</span>           <span class="comment">// Discount BDT</span>
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="schema-card">
+                <div class="schema-title"><i data-lucide="user-check"></i> Collection: koshais</div>
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
+                        <div class="code-title">koshai_schema.json</div>
+                        <button class="copy-btn"><i data-lucide="copy" style="width: 14px;"></i> Copy</button>
+                    </div>
+                    <div class="code-content">
+                        <pre>
 {
-  uid: String,               // Firebase Auth UID
-  name: String,
-  phone: String,
-  photoUrl: String,
-  nidUrl: String,            // Firebase Storage: NID scan
-  tradeCertUrl: String,     // Firebase Storage: certificate (optional)
-  district: String,         // Primary coverage district
-  upazila: String,
-  coverageAreas: [String],  // List of additional upazilas covered
-  ratePerCow: Number,       // BDT
-  ratePerGoat: Number,      // BDT
-  ratePerSheep: Number,     // BDT
-  surgeMultiplier: Number,  // Default 1.0; up to 2.0 during Eid
-  status: String,           // available | busy | offline
-  isVerified: Boolean,      // Set by admin only
-  isEidMode: Boolean,       // Surge pricing active
-  rating: Number,           // Running average (0.0–5.0)
-  totalRatings: Number,     // Count of ratings received
-  totalJobs: Number,        // Completed bookings
-  lat: Number,              // Last known latitude
-  lng: Number,              // Last known longitude
-  locationUpdatedAt: Timestamp,
-  fcmToken: String,
-  earnings: Number,         // Lifetime BDT received
-  createdAt: Timestamp,
-  approvedAt: Timestamp,    // When admin verified
-  approvedBy: String        // Admin UID
-}</div>
-  </div>
-  
-  <div class="schema-section">
-    <div class="schema-title">Collection: bookings</div>
-    <div class="schema-code">bookings/{bookingId}
-{
-  id: String,               // Auto-generated Firestore ID
-  userId: String,          // Booker UID
-  userName: String,
-  userPhone: String,
-  koshaiId: String,
-  koshaiName: String,
-  koshaiPhone: String,
-  district: String,
-  upazila: String,
-  address: String,          // Full delivery address
-  lat: Number,              // Booking location
-  lng: Number,
-  date: Timestamp,          // Scheduled Eid day
-  slot: String,             // e.g. 07:00-09:00
-  animalTypes: {
-    cow: Number,
-    goat: Number,
-    sheep: Number
-  },
-  estimatedDurationMins: Number,
-  rateBreakdown: {
-    perCow: Number,  perGoat: Number,  perSheep: Number,
-    surgeMultiplier: Number,  total: Number
-  },
-  depositPaid: Number,      // BDT paid upfront
-  paymentRef: String,       // bKash/Nagad transaction ID
-  status: String,           // pending|confirmed|en_route|arrived|completed|cancelled
-  cancelReason: String,
-  cancelledBy: String,      // user | koshai | admin
-  isGroupBooking: Boolean,
-  groupSessionId: String,  // Links to groupSessions collection
-  isTeamBooking: Boolean,
-  teamKoshaiIds: [String],
-  createdAt: Timestamp,
-  confirmedAt: Timestamp,
-  completedAt: Timestamp,
-  reminder24Sent: Boolean,
-  reminder2Sent: Boolean
-}</div>
-  </div>
-  
-  <div class="schema-section">
-    <div class="schema-title">Collection: reviews</div>
-    <div class="schema-code">reviews/{reviewId}
-{
-  bookingId: String,
-  userId: String,
-  koshaiId: String,
-  rating: Number,          // 1–5
-  comment: String,
-  photoUrls: [String],     // Optional review photos
-  createdAt: Timestamp
-}</div>
-  </div>
-  
-  <div class="schema-section">
-    <div class="schema-title">Collection: chats (Realtime Database)</div>
-    <div class="schema-code">chats/{bookingId}/messages/{messageId}
-{
-  senderId: String,
-  senderName: String,
-  text: String,
-  timestamp: Long           // Unix millis
-}</div>
-  </div>
-  
-  <div class="schema-section">
-    <div class="schema-title">Collection: groupSessions</div>
-    <div class="schema-code">groupSessions/{sessionId}
-{
-  organizerUid: String,
-  koshaiId: String,
-  sessionCode: String,      // 6-char join code
-  district: String,
-  slot: String,
-  date: Timestamp,
-  maxFamilies: Number,
-  joinedFamilies: [
-    { uid, name, animalTypes, contribution }
-  ],
-  travelFeeSplit: Number,  // Per-family share of travel cost
-  status: String,          // open | full | confirmed | completed
-  createdAt: Timestamp
-}</div>
-  </div>
-  
-  <div class="schema-section">
-    <div class="schema-title">Collection: waitlists</div>
-    <div class="schema-code">waitlists/{koshaiId}/entries/{userId}
-{
-  userId: String,
-  userName: String,
-  userPhone: String,
-  preferredSlot: String,
-  joinedAt: Timestamp
-}</div>
-  </div>
-  
-  <div class="schema-section">
-    <div class="schema-title">Realtime Database — live locations & koshai status</div>
-    <div class="schema-code">realtime_db/
-  locations/
-    {koshaiId}/
-      lat: Double
-      lng: Double
-      updatedAt: Long
-  bookingStatus/
-    {bookingId}: String      // pending|confirmed|en_route|arrived|completed</div>
-  </div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin: 32px 0 12px;">4.2 Firestore Security Rules</h3>
-  <div class="schema-code">rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
+  <span class="key">"isVerified"</span>: <span class="bool">false</span>,    <span class="comment">// Admin verification</span>
+  <span class="key">"ratePerCow"</span>: <span class="number">3500</span>,     <span class="comment">// BDT</span>
+  <span class="key">"status"</span>: <span class="string">"available"</span>,  <span class="comment">// Live status</span>
+  <span class="key">"rating"</span>: <span class="number">4.8</span>,          <span class="comment">// Avg stars</span>
+  <span class="key">"isEidMode"</span>: <span class="bool">true</span>       <span class="comment">// Surge active</span>
+}</pre>
+                    </div>
+                </div>
+            </div>
 
-    // Users: read own, write own only
-    match /users/{uid} {
-      allow read: if request.auth.uid == uid;
-      allow write: if request.auth.uid == uid;
-    }
+            <div class="info-box">
+                <i data-lucide="shield-check"></i>
+                <p>Firebase Security Rules ensure that users can only read their own data and koshais can only update their profile after verification.</p>
+            </div>
+        </div>
+    </section>
 
-    // Koshais: anyone can read, only owner writes (except isVerified)
-    match /koshais/{uid} {
-      allow read: if request.auth != null;
-      allow write: if request.auth.uid == uid
-                   && !request.resource.data.keys().hasAny(['isVerified','approvedBy']);
-    }
+    <!-- 5. SCREENS -->
+    <section id="screens" class="section reveal">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">05 — Screen Plan</div>
+                <h2 class="section-title">User Experience Journey</h2>
+            </div>
+            
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Side</th><th>Screen</th><th>Component</th><th>Purpose</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="tag tag-activity">User</span></td><td>Home Map</td><td>Fragment</td><td>Find koshais near you via map pins</td></tr>
+                        <tr><td><span class="tag tag-activity">User</span></td><td>Koshai Profile</td><td>Fragment</td><td>View reviews, rates, and book slots</td></tr>
+                        <tr><td><span class="tag tag-activity">User</span></td><td>Live Tracker</td><td>Fragment</td><td>Track koshai GPS on Eid morning</td></tr>
+                        <tr><td><span class="tag tag-fragment">Koshai</span></td><td>Dashboard</td><td>Fragment</td><td>Manage earnings and daily schedule</td></tr>
+                        <tr><td><span class="tag tag-fragment">Koshai</span></td><td>NID Register</td><td>Fragment</td><td>Identity verification for trust</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 
-    // Bookings: user or koshai of that booking can read/write
-    match /bookings/{bookingId} {
-      allow read, write: if request.auth.uid == resource.data.userId
-                         || request.auth.uid == resource.data.koshaiId;
-      allow create: if request.auth != null;
-    }
+    <!-- 6. CODE -->
+    <section id="code" class="section reveal">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">06 — Core Logic</div>
+                <h2 class="section-title">Kotlin Implementation</h2>
+            </div>
 
-    // Reviews: user who booked can create, anyone can read
-    match /reviews/{reviewId} {
-      allow read: if request.auth != null;
-      allow create: if request.auth.uid == request.resource.data.userId;
-    }
-  }
-}</div>
-</section>
-
-<!-- 5. SCREENS -->
-<section id="screens" class="section">
-  <div class="section-header"><div class="section-label">05 — Screen List</div><h2 class="section-title">5. Complete Screen & Navigation Plan</h2></div>
-  
-  <h3 style="margin-bottom: 14px; color: var(--primary);">5.1 User Screens (12 screens)</h3>
-  <table class="data-table">
-    <tr><th>Screen</th><th>Fragment/Activity</th><th>Description</th></tr>
-    <tr><td>Splash</td><td><span class="screen-type activity">Activity</span></td><td>Logo, check auth state, route to Auth or Home</td></tr>
-    <tr class="table-row-alt"><td>Role select</td><td><span class="screen-type fragment">Fragment</span></td><td>Are you a User or a Koshai? Two big buttons</td></tr>
-    <tr><td>Phone input</td><td><span class="screen-type fragment">Fragment</span></td><td>Enter +88 number, send OTP</td></tr>
-    <tr class="table-row-alt"><td>OTP verify</td><td><span class="screen-type fragment">Fragment</span></td><td>6-digit OTP input, resend timer</td></tr>
-    <tr><td>Home (map)</td><td><span class="screen-type fragment">Fragment</span></td><td>Google Map with koshai pins, search bar, filter FAB</td></tr>
-    <tr class="table-row-alt"><td>Search/Filter</td><td><span class="screen-type fragment">Fragment</span></td><td>Filter by district, upazila, animal, price, availability</td></tr>
-    <tr><td>Koshai profile</td><td><span class="screen-type fragment">Fragment</span></td><td>Photo, rating, rates, slots, reviews, Book button</td></tr>
-    <tr class="table-row-alt"><td>Booking form</td><td><span class="screen-type fragment">Fragment</span></td><td>Date, slot, address, animal count, price estimate</td></tr>
-    <tr><td>Payment</td><td><span class="screen-type fragment">Fragment</span></td><td>bKash/Nagad SDK, deposit confirmation</td></tr>
-    <tr class="table-row-alt"><td>Live tracker</td><td><span class="screen-type fragment">Fragment</span></td><td>Real-time status bar + koshai location on mini-map</td></tr>
-    <tr><td>My bookings</td><td><span class="screen-type fragment">Fragment</span></td><td>List of all bookings with status badges</td></tr>
-    <tr class="table-row-alt"><td>Write review</td><td><span class="screen-type fragment">Fragment</span></td><td>Stars, comment, optional photo upload</td></tr>
-  </table>
-  
-  <h3 style="margin: 28px 0 14px; color: var(--primary);">5.2 Koshai Screens (10 screens)</h3>
-  <table class="data-table">
-    <tr><th>Screen</th><th>Fragment/Activity</th><th>Description</th></tr>
-    <tr><td>Registration</td><td><span class="screen-type fragment">Fragment</span></td><td>Name, NID upload, photo, district, rates per animal</td></tr>
-    <tr class="table-row-alt"><td>Pending approval</td><td><span class="screen-type fragment">Fragment</span></td><td>Show waiting state until admin verifies NID</td></tr>
-    <tr><td>Dashboard</td><td><span class="screen-type fragment">Fragment</span></td><td>Incoming requests count, today's schedule, toggle status</td></tr>
-    <tr class="table-row-alt"><td>Availability toggle</td><td><span class="screen-type fragment">Fragment</span></td><td>Open / Busy / Offline switch, Eid mode & surge rate</td></tr>
-    <tr><td>Booking manager</td><td><span class="screen-type fragment">Fragment</span></td><td>List of pending/confirmed bookings, Accept/Decline</td></tr>
-    <tr class="table-row-alt"><td>Booking detail</td><td><span class="screen-type fragment">Fragment</span></td><td>Full booking info, chat button, complete/cancel action</td></tr>
-    <tr><td>In-app chat</td><td><span class="screen-type fragment">Fragment</span></td><td>Message thread for a specific booking</td></tr>
-    <tr class="table-row-alt"><td>Earnings</td><td><span class="screen-type fragment">Fragment</span></td><td>Total earned, per-booking history, monthly breakdown</td></tr>
-    <tr><td>Leaderboard</td><td><span class="screen-type fragment">Fragment</span></td><td>District ranking, own position highlight</td></tr>
-    <tr class="table-row-alt"><td>My profile</td><td><span class="screen-type fragment">Fragment</span></td><td>Edit rates, coverage area, photo, toggle Eid mode</td></tr>
-  </table>
-</section>
-
-<!-- 6. KOTLIN CODE -->
-<section id="code" class="section" style="background: var(--gray-light);">
-  <div class="section-header"><div class="section-label">06 — Kotlin Code</div><h2 class="section-title">6. Key Kotlin Implementation Code</h2></div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin-bottom: 12px;">6.1 Gradle Dependencies (app/build.gradle)</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-title">build.gradle</span></div>
-    <div class="code-content"><pre>dependencies {
-  // Firebase BOM — manages all Firebase versions
-  implementation(platform('com.google.firebase:firebase-bom:32.7.0'))
-  implementation('com.google.firebase:firebase-auth-ktx')
-  implementation('com.google.firebase:firebase-firestore-ktx')
-  implementation('com.google.firebase:firebase-database-ktx')
-  implementation('com.google.firebase:firebase-messaging-ktx')
-  implementation('com.google.firebase:firebase-storage-ktx')
-  implementation('com.google.firebase:firebase-functions-ktx')
-
-  // Google Maps & Location
-  implementation('com.google.android.gms:play-services-maps:18.2.0')
-  implementation('com.google.android.gms:play-services-location:21.0.1')
-
-  // Jetpack
-  implementation('androidx.navigation:navigation-fragment-ktx:2.7.6')
-  implementation('androidx.navigation:navigation-ui-ktx:2.7.6')
-  implementation('androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0')
-  implementation('androidx.lifecycle:lifecycle-runtime-ktx:2.7.0')
-  implementation('androidx.hilt:hilt-navigation-fragment:1.1.0')
-
-  // Hilt DI
-  implementation('com.google.dagger:hilt-android:2.50')
-  kapt('com.google.dagger:hilt-compiler:2.50')
-
-  // Networking
-  implementation('com.squareup.retrofit2:retrofit:2.9.0')
-  implementation('com.squareup.retrofit2:converter-gson:2.9.0')
-  implementation('com.squareup.okhttp3:logging-interceptor:4.12.0')
-
-  // Image loading
-  implementation('com.github.bumptech.glide:glide:4.16.0')
-
-  // Material Design 3
-  implementation('com.google.android.material:material:1.11.0')
-
-  // Coroutines
-  implementation('org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3')
-  implementation('org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3')
-}</pre></div>
-  </div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin: 28px 0 12px;">6.2 Data Models (Kotlin Data Classes)</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-title">Koshai.kt</span></div>
-    <div class="code-content"><pre>// Koshai.kt
-data class Koshai(
-  val uid: String = "",
-  val name: String = "",
-  val phone: String = "",
-  val photoUrl: String = "",
-  val district: String = "",
-  val upazila: String = "",
-  val ratePerCow: Int = 0,
-  val ratePerGoat: Int = 0,
-  val status: String = "offline",  // available|busy|offline
-  val isVerified: Boolean = false,
-  val rating: Double = 0.0,
-  val totalJobs: Int = 0,
-  val lat: Double = 0.0,
-  val lng: Double = 0.0,
-  val surgeMultiplier: Double = 1.0,
-  val isEidMode: Boolean = false
-)
-
-// Booking.kt
-data class Booking(
-  val id: String = "",
-  val userId: String = "",
-  val koshaiId: String = "",
-  val address: String = "",
-  val lat: Double = 0.0,
-  val lng: Double = 0.0,
-  val date: com.google.firebase.Timestamp? = null,
-  val slot: String = "",
-  val cowCount: Int = 0,
-  val goatCount: Int = 0,
-  val totalFee: Int = 0,
-  val depositPaid: Int = 0,
-  val paymentRef: String = "",
-  val status: String = "pending",
-  val isGroupBooking: Boolean = false
-)</pre></div>
-  </div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin: 28px 0 12px;">6.3 HomeViewModel — Fetch & Filter Koshais</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-title">HomeViewModel.kt</span></div>
-    <div class="code-content"><pre>@HiltViewModel
-class HomeViewModel @Inject constructor(
-  private val repo: KoshaiRepository
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
+                    <div class="code-title">HomeViewModel.kt</div>
+                    <button class="copy-btn"><i data-lucide="copy" style="width: 14px;"></i> Copy</button>
+                </div>
+                <div class="code-content">
+                    <pre>
+<span class="type">@HiltViewModel</span>
+<span class="key">class</span> <span class="func">HomeViewModel</span> <span class="type">@Inject constructor</span>(
+  <span class="key">private val</span> repo: KoshaiRepository
 ) : ViewModel() {
 
-  private val _koshais = MutableStateFlow<List<Koshai>>(emptyList())
-  val koshais: StateFlow<List<Koshai>> = _koshais
+  <span class="key">private val</span> _koshais = MutableStateFlow&lt;List&lt;Koshai&gt;&gt;(emptyList())
+  <span class="key">val</span> koshais: StateFlow&lt;List&lt;Koshai&gt;&gt; = _koshais
 
-  fun loadKoshais(district: String, animalType: String? = null) {
-    viewModelScope.launch {
-      repo.getAvailableKoshais(district, animalType).collect {
-        _koshais.value = it
+  <span class="key">fun</span> <span class="func">loadKoshais</span>(district: <span class="type">String</span>) {
+    viewModelScope.<span class="func">launch</span> {
+      repo.<span class="func">getAvailableKoshais</span>(district).<span class="func">collect</span> { list ->
+        _koshais.value = list
       }
     }
   }
-}
+}</pre>
+                </div>
+            </div>
 
-// KoshaiRepository.kt
-class KoshaiRepository @Inject constructor(
-  private val db: FirebaseFirestore
-) {
-  fun getAvailableKoshais(district: String, animal: String?) =
-    callbackFlow {
-      var query: Query = db.collection("koshais")
-        .whereEqualTo("district", district)
-        .whereEqualTo("status", "available")
-      if (animal == "cow") query = query.whereGreaterThan("ratePerCow", 0)
-      if (animal == "goat") query = query.whereGreaterThan("ratePerGoat", 0)
-      val listener = query.addSnapshotListener { snap, _ ->
-        trySend(snap?.toObjects(Koshai::class.java) ?: emptyList())
-      }
-      awaitClose { listener.remove() }
+            <!-- Cloud Functions -->
+            <div class="section-header" style="margin-top: 64px;">
+                <div class="section-label">06.1 — Backend</div>
+                <h2 class="section-title">Cloud Functions (Node.js)</h2>
+            </div>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
+                    <div class="code-title">reminders.ts</div>
+                    <button class="copy-btn"><i data-lucide="copy" style="width: 14px;"></i> Copy</button>
+                </div>
+                <div class="code-content">
+                    <pre>
+<span class="key">export const</span> <span class="func">sendBookingReminders</span> = functions.pubsub
+  .<span class="func">schedule</span>(<span class="string">'every 30 minutes'</span>)
+  .<span class="func">onRun</span>(<span class="key">async</span> () => {
+    <span class="key">const</span> now = admin.firestore.Timestamp.<span class="func">now</span>();
+    <span class="key">const</span> snap24 = <span class="key">await</span> db.<span class="func">collection</span>(<span class="string">'bookings'</span>)
+      .<span class="func">where</span>(<span class="string">'status'</span>, <span class="string">'in'</span>, [<span class="string">'confirmed'</span>])
+      .<span class="func">where</span>(<span class="string">'reminder24Sent'</span>, <span class="string">'=='</span>, <span class="bool">false</span>)
+      .<span class="func">get</span>();
+
+    <span class="key">for</span> (<span class="key">const</span> doc <span class="key">of</span> snap24.docs) {
+      <span class="key">const</span> b = doc.<span class="func">data</span>();
+      <span class="key">await</span> <span class="func">sendFCM</span>(b.userFcmToken, <span class="string">'Reminder'</span>, <span class="string">'Your koshai arrives tomorrow.'</span>);
+      <span class="key">await</span> doc.ref.<span class="func">update</span>({ reminder24Sent: <span class="bool">true</span> });
     }
-}</pre></div>
-  </div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin: 28px 0 12px;">6.4 HomeFragment — Google Maps Integration</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-title">HomeFragment.kt</span></div>
-    <div class="code-content"><pre>class HomeFragment : Fragment(), OnMapReadyCallback {
-  private lateinit var map: GoogleMap
-  private val vm: HomeViewModel by viewModels()
-  private val markerMap = mutableMapOf<Marker, Koshai>()
+  });</pre>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  override fun onMapReady(googleMap: GoogleMap) {
-    map = googleMap
-    map.setOnMarkerClickListener { marker ->
-      val koshai = markerMap[marker] ?: return@setOnMarkerClickListener false
-      findNavController().navigate(
-        HomeFragmentDirections.toKoshaiProfile(koshaiId = koshai.uid)
-      )
-      true
-    }
-    observeKoshais()
-  }
+    <!-- 8. FEATURES -->
+    <section id="features" class="section reveal">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">07 — Product Roadmap</div>
+                <h2 class="section-title">18 Core Features</h2>
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>MVP Phase</h3>
+                    <ul class="feature-list">
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Phone OTP Authentication</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Interactive Google Map Pins</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Time-Slot Booking Logic</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Trust Phase</h3>
+                    <ul class="feature-list">
+                        <li class="feature-item"><div class="feature-icon" style="background: #eff6ff; color: #2563eb;"><i data-lucide="shield"></i></div>Verified Professional Badges</li>
+                        <li class="feature-item"><div class="feature-icon" style="background: #eff6ff; color: #2563eb;"><i data-lucide="message-square"></i></div>In-app Real-time Chat</li>
+                        <li class="feature-item"><div class="feature-icon" style="background: #eff6ff; color: #2563eb;"><i data-lucide="star"></i></div>Rating & Review System</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Growth Phase</h3>
+                    <ul class="feature-list">
+                        <li class="feature-item"><div class="feature-icon" style="background: #fffbeb; color: #d97706;"><i data-lucide="wallet"></i></div>bKash/Nagad Integration</li>
+                        <li class="feature-item"><div class="feature-icon" style="background: #fffbeb; color: #d97706;"><i data-lucide="zap"></i></div>Eid-Mode Surge Pricing</li>
+                        <li class="feature-item"><div class="feature-icon" style="background: #fffbeb; color: #d97706;"><i data-lucide="users"></i></div>Group Neighborhood Booking</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  private fun observeKoshais() {
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        vm.koshais.collect { list ->
-          map.clear(); markerMap.clear()
-          list.forEach { koshai ->
-            val color = if (koshai.isVerified)
-              BitmapDescriptorFactory.HUE_GREEN
-            else BitmapDescriptorFactory.HUE_ORANGE
-            val marker = map.addMarker(MarkerOptions()
-              .position(LatLng(koshai.lat, koshai.lng))
-              .title(koshai.name)
-              .snippet("Cow: ৳${koshai.ratePerCow} | Goat: ৳${koshai.ratePerGoat}")
-              .icon(BitmapDescriptorFactory.defaultMarker(color)))
-            marker?.let { markerMap[it] = koshai }
-          }
-        }
-      }
-    }
-  }
-}</pre></div>
-  </div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin: 28px 0 12px;">6.5 Booking Flow with Cost Estimator</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-title">BookingViewModel.kt</span></div>
-    <div class="code-content"><pre>class BookingViewModel @Inject constructor(
-  private val db: FirebaseFirestore,
-  private val auth: FirebaseAuth
-) : ViewModel() {
+    <!-- 9. PIPELINE -->
+    <section id="pipeline" class="section reveal">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">08 — Pipeline</div>
+                <h2 class="section-title">24-Week Sprint Schedule</h2>
+            </div>
+            
+            <div class="pipeline-container">
+                <div class="pipeline-card">
+                    <span class="phase-badge badge-mvp">Phase 1</span>
+                    <h3 class="phase-title">Foundation</h3>
+                    <span class="phase-duration">Weeks 1-6</span>
+                    <ul class="feature-list">
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="code"></i></div>Firebase & Auth Setup</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="map-pin"></i></div>Maps Integration</li>
+                    </ul>
+                </div>
+                <div class="pipeline-card">
+                    <span class="phase-badge badge-trust">Phase 2</span>
+                    <h3 class="phase-title">Confidence</h3>
+                    <span class="phase-duration">Weeks 7-12</span>
+                    <ul class="feature-list">
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="shield"></i></div>Verification Flow</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="navigation"></i></div>Live GPS Tracking</li>
+                    </ul>
+                </div>
+                <div class="pipeline-card">
+                    <span class="phase-badge badge-growth">Phase 3</span>
+                    <h3 class="phase-title">Economy</h3>
+                    <span class="phase-duration">Weeks 13-18</span>
+                    <ul class="feature-list">
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="credit-card"></i></div>bKash PGW API</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="trending-up"></i></div>Surge Multiplier</li>
+                    </ul>
+                </div>
+                <div class="pipeline-card">
+                    <span class="phase-badge badge-scale">Phase 4</span>
+                    <h3 class="phase-title">Global</h3>
+                    <span class="phase-duration">Weeks 19-24</span>
+                    <ul class="feature-list">
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="bar-chart"></i></div>Admin Analytics</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="rocket"></i></div>Public Release</li>
+                    </ul>
+                </div>
+            </div>
 
-  fun estimateCost(koshai: Koshai, cows: Int, goats: Int): Int {
-    val base = (cows * koshai.ratePerCow) + (goats * koshai.ratePerGoat)
-    return (base * koshai.surgeMultiplier).toInt()
-  }
+            <!-- CI/CD Section -->
+            <div class="section-header" style="margin-top: 80px;">
+                <div class="section-label">08.1 — Deployment</div>
+                <h2 class="section-title">CI/CD & Play Store</h2>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Submission Checklist</h3>
+                    <ul class="feature-list">
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>API 34+ Target SDK</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Keystore Security (GitHub Secrets)</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Bangla Store Listing</li>
+                    </ul>
+                </div>
+                <div class="card" style="grid-column: span 2;">
+                    <h3>GitHub Actions Workflow</h3>
+                    <div class="code-container">
+                        <div class="code-header">
+                            <div class="code-title">release.yml</div>
+                            <button class="copy-btn"><i data-lucide="copy" style="width: 14px;"></i> Copy</button>
+                        </div>
+                        <div class="code-content">
+                            <pre>
+<span class="key">on</span>:
+  <span class="key">push</span>:
+    <span class="key">tags</span>: [<span class="string">'v*'</span>]
+<span class="key">jobs</span>:
+  <span class="key">build</span>:
+    <span class="key">steps</span>:
+      - <span class="key">uses</span>: actions/checkout@v4
+      - <span class="key">run</span>: ./gradlew bundleRelease</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  fun estimateDuration(cows: Int, goats: Int): Int {
-    return (cows * 45) + (goats * 25)  // minutes per animal
-  }
+    <!-- MONETIZATION -->
+    <section id="monetization" class="section reveal">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">09 — Business Model</div>
+                <h2 class="section-title">Monetization Strategy</h2>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Stream</th><th>Model</th><th>Target</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Deposits</td><td>10% upfront payment</td><td>Reduce no-shows</td></tr>
+                        <tr><td>Commission</td><td>5% per transaction</td><td>Main revenue</td></tr>
+                        <tr><td>Featured</td><td>BDT 200/day for top spot</td><td>Priority visibility</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 
-  fun createBooking(booking: Booking, onSuccess: (String) -> Unit) {
-    viewModelScope.launch {
-      try {
-        val ref = db.collection("bookings").document()
-        val withId = booking.copy(id = ref.id)
-        ref.set(withId).await()
-        // Mark koshai busy for that slot
-        db.collection("koshais").document(booking.koshaiId)
-          .update("status", "busy").await()
-        onSuccess(ref.id)
-      } catch (e: Exception) {
-        // Handle error
-      }
-    }
-  }
-}</pre></div>
-  </div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin: 28px 0 12px;">6.6 Real-Time Chat (Firebase Realtime Database)</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-title">ChatViewModel.kt</span></div>
-    <div class="code-content"><pre>class ChatViewModel @Inject constructor(
-  private val rtdb: FirebaseDatabase,
-  private val auth: FirebaseAuth
-) : ViewModel() {
+    <!-- RISKS -->
+    <section id="risks" class="section reveal">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">10 — Challenges</div>
+                <h2 class="section-title">Risks & Mitigations</h2>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Supply Chain</h3>
+                    <p>Low supply at launch. <strong>Mitigation:</strong> Pre-register koshais via WhatsApp outreach.</p>
+                </div>
+                <div class="card">
+                    <h3>Technical</h3>
+                    <p>Firebase scaling costs. <strong>Mitigation:</strong> Implement Firestore index budgets.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  private val _messages = MutableStateFlow<List<ChatMessage>>(emptyList())
-  val messages: StateFlow<List<ChatMessage>> = _messages
+    <!-- APPENDIX -->
+    <section id="appendix" class="section reveal">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">11 — Appendix</div>
+                <h2 class="section-title">Quick Reference & Resources</h2>
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Launch Districts</h3>
+                    <ul class="feature-list">
+                        <li class="feature-item">Dhaka (High density)</li>
+                        <li class="feature-item">Narayanganj (Base)</li>
+                        <li class="feature-item">Chattogram (Second city)</li>
+                        <li class="feature-item">Sylhet (High power)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>API Credentials</h3>
+                    <ul class="feature-list">
+                        <li class="feature-item">Firebase google-services.json</li>
+                        <li class="feature-item">Google Maps API Key</li>
+                        <li class="feature-item">bKash Merchant Account</li>
+                        <li class="feature-item">Nagad Merchant Account</li>
+                    </ul>
+                </div>
+            </div>
 
-  fun observeChat(bookingId: String) {
-    rtdb.getReference("chats/$bookingId/messages")
-      .orderByChild("timestamp")
-      .addValueEventListener(object : ValueEventListener {
-        override fun onDataChange(snap: DataSnapshot) {
-          _messages.value = snap.children.mapNotNull {
-            it.getValue(ChatMessage::class.java)
-          }
-        }
-        override fun onCancelled(e: DatabaseError) {}
-      })
-  }
+            <div class="info-box" style="margin-top: 48px;">
+                <i data-lucide="info"></i>
+                <p>This document covers the complete Koshai Finder app — 18 features, 4 phases, 24 weeks. Build Phase 1 first, get real users, then expand.</p>
+            </div>
+        </div>
+    </section>
 
-  fun sendMessage(bookingId: String, text: String) {
-    val msg = ChatMessage(
-      senderId = auth.currentUser?.uid ?: return,
-      text = text,
-      timestamp = System.currentTimeMillis()
-    )
-    rtdb.getReference("chats/$bookingId/messages").push().setValue(msg)
-  }
-}</pre></div>
-  </div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin: 28px 0 12px;">6.7 Live Koshai Location Tracking</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-title">KoshaiLocationService.kt</span></div>
-    <div class="code-content"><pre>// KoshaiLocationService.kt — runs as foreground service on koshai's device
-class KoshaiLocationService : Service() {
-  private lateinit var fusedClient: FusedLocationProviderClient
-  private val rtdb = Firebase.database
-  private val koshaiId = Firebase.auth.currentUser?.uid ?: ""
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="logo" style="justify-content: center; margin-bottom: 24px; color: white;">
+                <div class="logo-icon"><i data-lucide="knife"></i></div>
+                <span>Koshai Finder</span>
+            </div>
+            <h2>Revolutionizing Eid in Bangladesh</h2>
+            <p>A professional technical blueprint for the future of ritual sacrifice logistics. Built with Kotlin and Firebase.</p>
+            
+            <div class="footer-links">
+                <a href="#cover" class="footer-link">Home</a>
+                <a href="#tech" class="footer-link">Tech Stack</a>
+                <a href="#pipeline" class="footer-link">Timeline</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
+            </div>
 
-  private val locationCallback = object : LocationCallback() {
-    override fun onLocationResult(result: LocationResult) {
-      result.lastLocation?.let { loc ->
-        rtdb.getReference("locations/$koshaiId").setValue(
-          mapOf("lat" to loc.latitude, "lng" to loc.longitude,
-                "updatedAt" to System.currentTimeMillis())
-        )
-      }
-    }
-  }
+            <div class="copyright">
+                &copy; 2026 Koshai Finder Bangladesh. All rights reserved. 
+                <br> Designed with ❤️ by Antigravity AI
+            </div>
+        </div>
+    </footer>
 
-  override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-    val req = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10_000).build()
-    fusedClient.requestLocationUpdates(req, locationCallback, Looper.getMainLooper())
-    return START_STICKY
-  }
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
 
-  override fun onBind(intent: Intent?) = null
-}</pre></div>
-  </div>
-</section>
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        let isDark = false;
 
-<!-- 7. CLOUD FUNCTIONS -->
-<section id="functions" class="section">
-  <div class="section-header"><div class="section-label">07 — Cloud Functions</div><h2 class="section-title">7. Firebase Cloud Functions (Node.js)</h2></div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin-bottom: 12px;">7.1 Booking Reminder Function</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-title">reminders.ts</span></div>
-    <div class="code-content"><pre>// functions/src/reminders.ts
-export const sendBookingReminders = functions.pubsub
-  .schedule('every 30 minutes')
-  .onRun(async () => {
-    const now = admin.firestore.Timestamp.now();
-    const in24h = new Date(Date.now() + 24 * 60 * 60 * 1000);
-    const in2h  = new Date(Date.now() +  2 * 60 * 60 * 1000);
+        themeToggle.addEventListener('click', () => {
+            isDark = !isDark;
+            body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            themeToggle.innerHTML = isDark ? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>';
+            lucide.createIcons();
+        });
 
-    const snap24 = await db.collection('bookings')
-      .where('status', 'in', ['confirmed'])
-      .where('reminder24Sent', '==', false)
-      .where('date', '<=', admin.firestore.Timestamp.fromDate(in24h))
-      .get();
+        // Scroll Progress
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
 
-    for (const doc of snap24.docs) {
-      const b = doc.data();
-      await sendFCM(b.userFcmToken, '24-hour reminder', `Your koshai ${b.koshaiName} arrives tomorrow.`);
-      await sendFCM(b.koshaiToken,  '24-hour reminder', `Booking tomorrow at ${b.slot} in ${b.upazila}.`);
-      await doc.ref.update({ reminder24Sent: true });
-    }
-  });</pre></div>
-  </div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin: 28px 0 12px;">7.2 Fraud Detection Function</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-title">fraud.ts</span></div>
-    <div class="code-content"><pre>// Fires on every booking creation
-export const detectFraud = functions.firestore
-  .document('bookings/{bookingId}')
-  .onCreate(async (snap) => {
-    const b = snap.data();
-    const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+            // Header Shadow
+            if (winScroll > 50) {
+                document.getElementById('header').classList.add('scrolled');
+            } else {
+                document.getElementById('header').classList.remove('scrolled');
+            }
 
-    const todaySnap = await db.collection('bookings')
-      .where('koshaiId', '==', b.koshaiId)
-      .where('status', 'in', ['pending','confirmed'])
-      .where('date', '>=', admin.firestore.Timestamp.fromDate(todayStart))
-      .get();
+            // Scroll Reveal
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const revealTop = reveal.getBoundingClientRect().top;
+                const revealPoint = 150;
+                if (revealTop < windowHeight - revealPoint) {
+                    reveal.classList.add('active');
+                }
+            });
 
-    if (todaySnap.size > 25) {
-      // Flag the koshai account for review
-      await db.collection('koshais').doc(b.koshaiId)
-        .update({ status: 'offline', flaggedForReview: true });
-      await db.collection('adminAlerts').add({
-        type: 'fraud_suspected', koshaiId: b.koshaiId,
-        bookingCount: todaySnap.size, createdAt: admin.firestore.FieldValue.serverTimestamp()
-      });
-    }
-  });</pre></div>
-  </div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin: 28px 0 12px;">7.3 Rating Average Update Function</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-title">ratings.ts</span></div>
-    <div class="code-content"><pre>export const updateKoshaiRating = functions.firestore
-  .document('reviews/{reviewId}')
-  .onCreate(async (snap) => {
-    const review = snap.data();
-    const koshaiRef = db.collection('koshais').doc(review.koshaiId);
+            // Active Nav
+            const sections = document.querySelectorAll('section[id]');
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (winScroll >= sectionTop - 120) {
+                    current = section.getAttribute('id');
+                }
+            });
 
-    await db.runTransaction(async (tx) => {
-      const kDoc = await tx.get(koshaiRef);
-      const current = kDoc.data()?.rating ?? 0;
-      const count   = kDoc.data()?.totalRatings ?? 0;
-      const newAvg  = ((current * count) + review.rating) / (count + 1);
-      tx.update(koshaiRef, {
-        rating: Math.round(newAvg * 10) / 10,
-        totalRatings: count + 1
-      });
-    });
-  });</pre></div>
-  </div>
-</section>
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.section === current) {
+                    btn.classList.add('active');
+                }
+            });
+        });
 
-<!-- 8. ALL 18 FEATURES -->
-<section id="features" class="section" style="background: var(--gray-light);">
-  <div class="section-header"><div class="section-label">08 — Features</div><h2 class="section-title">8. All 18 Features — Detailed Specification</h2></div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--accent); margin-bottom: 14px;">Phase 1 — MVP (Weeks 1–6)</h3>
-  <table class="data-table">
-    <tr><th>#</th><th>Feature</th><th>Implementation</th><th>Firebase Service</th></tr>
-    <tr><td>1</td><td>Phone OTP auth</td><td>PhoneAuthProvider with +88 prefix, role selection post-auth</td><td>Firebase Auth</td></tr>
-    <tr class="table-row-alt"><td>2</td><td>Koshai registration</td><td>NID photo upload to Storage, Firestore write, pending state</td><td>Auth, Storage, Firestore</td></tr>
-    <tr><td>3</td><td>Home map view</td><td>Google Maps with real-time Firestore listener for pins</td><td>Firestore, Maps SDK</td></tr>
-    <tr class="table-row-alt"><td>4</td><td>Slot-based booking</td><td>Time slots per koshai day, conflict check before write</td><td>Firestore</td></tr>
-    <tr><td>5</td><td>Push notifications</td><td>FCM tokens stored per user/koshai, Cloud Functions trigger</td><td>FCM, Cloud Functions</td></tr>
-  </table>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin: 28px 0 14px;">Phase 2 — Trust (Weeks 7–12)</h3>
-  <table class="data-table">
-    <tr><th>#</th><th>Feature</th><th>Implementation</th><th>Firebase Service</th></tr>
-    <tr><td>6</td><td>Verified badge system</td><td>Admin sets isVerified=true in Firestore, badge shown in UI</td><td>Firestore (admin write)</td></tr>
-    <tr class="table-row-alt"><td>7</td><td>Live booking tracker</td><td>Realtime DB status updates + koshai GPS on mini-map</td><td>Realtime DB, Maps SDK</td></tr>
-    <tr><td>8</td><td>In-app chat</td><td>Realtime DB chat per bookingId, no phone number sharing</td><td>Realtime Database</td></tr>
-    <tr class="table-row-alt"><td>9</td><td>Ratings & photo reviews</td><td>Post-completion form, Cloud Function updates rating average</td><td>Firestore, Storage, Functions</td></tr>
-    <tr><td>10</td><td>Animal count estimator</td><td>Local Kotlin calculation: count × rate × surgeMultiplier</td><td>None (local logic)</td></tr>
-  </table>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--warning); margin: 28px 0 14px;">Phase 3 — Growth (Weeks 13–18)</h3>
-  <table class="data-table">
-    <tr><th>#</th><th>Feature</th><th>Implementation</th><th>Firebase Service</th></tr>
-    <tr><td>11</td><td>bKash / Nagad payment</td><td>Retrofit call to bKash PGW API, store txn ref in Firestore</td><td>Firestore, Functions</td></tr>
-    <tr class="table-row-alt"><td>12</td><td>Surge pricing (Eid mode)</td><td>koshai.surgeMultiplier field, date-range Cloud Function activator</td><td>Firestore, Functions</td></tr>
-    <tr><td>13</td><td>Waitlist system</td><td>Ordered subcollection per koshai, trigger on booking cancel</td><td>Firestore, FCM</td></tr>
-    <tr class="table-row-alt"><td>14</td><td>Group / neighborhood booking</td><td>groupSessions collection, join code, shared koshai slot</td><td>Firestore</td></tr>
-    <tr><td>15</td><td>Smart reminders</td><td>Scheduled Cloud Function checks bookings every 30 mins</td><td>Cloud Functions, FCM</td></tr>
-  </table>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--danger); margin: 28px 0 14px;">Phase 4 — Scale (Weeks 19–24)</h3>
-  <table class="data-table">
-    <tr><th>#</th><th>Feature</th><th>Implementation</th><th>Firebase Service</th></tr>
-    <tr><td>16</td><td>Demand heatmap</td><td>Aggregate Firestore data by upazila, Maps SDK HeatmapTileProvider</td><td>Firestore, Maps SDK</td></tr>
-    <tr class="table-row-alt"><td>17</td><td>Koshai leaderboard</td><td>Nightly Cloud Function ranks koshais by rating+jobs per district</td><td>Firestore, Functions</td></tr>
-    <tr><td>18</td><td>Admin web dashboard</td><td>React + Firebase web app: verify koshais, analytics, bans</td><td>Firestore, Auth, Functions</td></tr>
-  </table>
-</section>
+        // Nav Click
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const sectionId = btn.dataset.section;
+                const section = document.getElementById(sectionId);
+                window.scrollTo({
+                    top: section.offsetTop - 72,
+                    behavior: 'smooth'
+                });
+            });
+        });
 
-<!-- 9. PIPELINE -->
-<section id="pipeline" class="section">
-  <div class="section-header"><div class="section-label">09 — Pipeline</div><h2 class="section-title">9. 24-Week Development Pipeline</h2></div>
-  <div class="pipeline">
-    <div class="pipeline-phase">
-      <div class="phase-header"><span class="phase-badge mvp">Phase 1</span><span class="phase-title">MVP</span></div>
-      <div class="phase-duration">Weeks 1–6</div>
-      <ul class="feature-list">
-        <li><span class="feature-check"></span>Firebase project setup</li>
-        <li><span class="feature-check"></span>Auth flow (phone, OTP, role)</li>
-        <li><span class="feature-check"></span>Koshai registration</li>
-        <li><span class="feature-check"></span>Google Maps integration</li>
-        <li><span class="feature-check"></span>Slot booking flow</li>
-        <li><span class="feature-check"></span>FCM notifications</li>
-      </ul>
-    </div>
-    <div class="pipeline-phase">
-      <div class="phase-header"><span class="phase-badge trust">Phase 2</span><span class="phase-title">Trust</span></div>
-      <div class="phase-duration">Weeks 7–12</div>
-      <ul class="feature-list">
-        <li><span class="feature-check"></span>Verified badge system</li>
-        <li><span class="feature-check"></span>Live booking tracker</li>
-        <li><span class="feature-check"></span>In-app chat</li>
-        <li><span class="feature-check"></span>Ratings & reviews</li>
-        <li><span class="feature-check"></span>Animal count estimator</li>
-        <li><span class="feature-check"></span>Phase 2 beta APK</li>
-      </ul>
-    </div>
-    <div class="pipeline-phase">
-      <div class="phase-header"><span class="phase-badge growth">Phase 3</span><span class="phase-title">Growth</span></div>
-      <div class="phase-duration">Weeks 13–18</div>
-      <ul class="feature-list">
-        <li><span class="feature-check"></span>bKash payment integration</li>
-        <li><span class="feature-check"></span>Nagad integration</li>
-        <li><span class="feature-check"></span>Eid mode surge pricing</li>
-        <li><span class="feature-check"></span>Waitlist system</li>
-        <li><span class="feature-check"></span>Group booking</li>
-        <li><span class="feature-check"></span>Play Store submission</li>
-      </ul>
-    </div>
-    <div class="pipeline-phase">
-      <div class="phase-header"><span class="phase-badge scale">Phase 4</span><span class="phase-title">Scale</span></div>
-      <div class="phase-duration">Weeks 19–24</div>
-      <ul class="feature-list">
-        <li><span class="feature-check"></span>Demand heatmap</li>
-        <li><span class="feature-check"></span>Koshai leaderboard</li>
-        <li><span class="feature-check"></span>Admin web dashboard</li>
-        <li><span class="feature-check"></span>Referral system</li>
-        <li><span class="feature-check"></span>Fraud detection</li>
-        <li><span class="feature-check"></span>v2.0 release</li>
-      </ul>
-    </div>
-  </div>
-</section>
+        // Copy Code
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const code = btn.closest('.code-container').querySelector('pre').innerText;
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i data-lucide="check" style="width: 14px;"></i> Copied!';
+                    lucide.createIcons();
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        lucide.createIcons();
+                    }, 2000);
+                });
+            });
+        });
 
-<!-- 10. FOLDER STRUCTURE -->
-<section id="structure" class="section" style="background: var(--gray-light);">
-  <div class="section-header"><div class="section-label">10 — Structure</div><h2 class="section-title">10. Project Folder Structure</h2></div>
-  
-  <div class="folder-tree">app/src/main/
-  java/com/koshaiapp/
-    di/                     // Hilt modules (FirebaseModule, etc.)
-    data/
-      model/                // Koshai.kt, Booking.kt, Review.kt, ChatMessage.kt
-      repository/           // KoshaiRepository.kt, BookingRepository.kt
-      remote/               // BkashApiService.kt (Retrofit)
-    domain/
-      usecase/              // GetKoshaisUseCase.kt, CreateBookingUseCase.kt
-    ui/
-      auth/                 // PhoneInputFragment, OtpVerifyFragment
-      home/                 // HomeFragment, HomeViewModel, SearchFilterFragment
-      koshai/               // KoshaiProfileFragment, KoshaiProfileViewModel
-      booking/              // BookingFormFragment, BookingViewModel, PaymentFragment
-      tracker/              // BookingTrackerFragment, BookingTrackerViewModel
-      chat/                 // ChatFragment, ChatViewModel
-      mybookings/           // MyBookingsFragment
-      review/               // WriteReviewFragment
-      koshaidashboard/      // KoshaiDashboardFragment, AvailabilityFragment
-      bookingmgr/           // BookingManagerFragment, BookingDetailFragment
-      earnings/             // EarningsFragment
-      leaderboard/          // LeaderboardFragment
-      admin/                // (Web only — separate React project)
-    service/
-      KoshaiLocationService.kt   // Foreground location service
-      FirebaseMessagingService.kt
-    util/                   // Extensions, Constants, DateUtils
-  res/
-    layout/                 // All XML layouts
-    navigation/             // nav_graph.xml
-    values/                 // strings.xml (English)
-    values-b+bn/            // strings.xml (Bangla)
-    drawable/               // Icons, backgrounds
+        // Search Functionality
+        const searchTrigger = document.getElementById('search-trigger');
+        const searchOverlay = document.getElementById('search-overlay');
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
 
-functions/                  // Firebase Cloud Functions (Node.js/TypeScript)
-  src/
-    reminders.ts
-    fraud.ts
-    ratings.ts
-    waitlist.ts
-    eidMode.ts
+        searchTrigger.addEventListener('click', () => {
+            searchOverlay.style.display = 'flex';
+            searchInput.focus();
+        });
 
-admin-dashboard/            // React web app
-  src/
-    pages/                  // VerifyKoshais, Disputes, Analytics
-    components/             // KoshaiCard, BookingTable</div>
-</section>
+        searchOverlay.addEventListener('click', (e) => {
+            if (e.target === searchOverlay) {
+                searchOverlay.style.display = 'none';
+            }
+        });
 
-<!-- 11. CI/CD -->
-<section id="cicd" class="section">
-  <div class="section-header"><div class="section-label">11 — CI/CD</div><h2 class="section-title">11. Play Store Submission & CI/CD</h2></div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin-bottom: 14px;">11.1 Google Play Store Checklist</h3>
-  <ol class="numbered-list">
-    <li>Create Google Play Console account (one-time $25 USD fee)</li>
-    <li>App signing: generate release keystore with keytool, store in GitHub Secrets</li>
-    <li>App bundle: build release AAB (not APK) — smaller size, better Play optimization</li>
-    <li>Store listing: Bangla + English description, screenshots from all key screens</li>
-    <li>Content rating: complete IARC questionnaire (expected: Everyone)</li>
-    <li>Privacy policy: host at koshaiapp.com/privacy — required for payment apps</li>
-    <li>Data safety form: declare Firebase Analytics, phone number collection</li>
-    <li>Target SDK: API 34 (required by Play Store from August 2024 onwards)</li>
-  </ol>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin: 28px 0 14px;">11.2 GitHub Actions CI/CD Pipeline</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span><span class="code-title">.github/workflows/release.yml</span></div>
-    <div class="code-content"><pre># .github/workflows/release.yml
-name: Build & Deploy Release APK
-on:
-  push:
-    branches: [ main ]
-    tags: [ 'v*' ]
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') searchOverlay.style.display = 'none';
+            if (e.altKey && e.key === 's') {
+                searchOverlay.style.display = 'flex';
+                searchInput.focus();
+            }
+        });
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with: { java-version: '17', distribution: 'temurin' }
-      - name: Decode google-services.json
-        run: echo ${{ secrets.GOOGLE_SERVICES_JSON }} | base64 -d > app/google-services.json
-      - name: Build Release AAB
-        run: ./gradlew bundleRelease
-        env:
-          KEYSTORE_FILE: ${{ secrets.KEYSTORE_B64 }}
-          KEY_ALIAS:     ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD:  ${{ secrets.KEY_PASSWORD }}
-      - name: Upload to Play Store
-        uses: r0adkll/upload-google-play@v1
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.PLAY_SA_JSON }}
-          packageName: com.koshaiapp
-          releaseFiles: app/build/outputs/bundle/release/*.aab
-          track: internal</pre></div>
-  </div>
-</section>
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            if (query.length < 2) {
+                searchResults.innerHTML = '';
+                return;
+            }
 
-<!-- 12. MONETIZATION -->
-<section id="monetization" class="section" style="background: var(--gray-light);">
-  <div class="section-header"><div class="section-label">12 — Revenue</div><h2 class="section-title">12. Monetization Strategy</h2></div>
-  <table class="data-table">
-    <tr><th>Revenue Stream</th><th>Model</th><th>Estimated Revenue</th></tr>
-    <tr><td>Booking deposit</td><td>User pays 5-10% deposit via bKash/Nagad at booking time</td><td>Core revenue from day 1</td></tr>
-    <tr class="table-row-alt"><td>Platform commission</td><td>5% commission deducted from each completed booking payment</td><td>Scales with transaction volume</td></tr>
-    <tr><td>Featured listings</td><td>Koshais pay BDT 200–500 to appear at top of search results during Eid</td><td>High demand period upsell</td></tr>
-    <tr class="table-row-alt"><td>Premium koshai</td><td>Verified Pro tier for BDT 500/year — priority support, analytics dashboard</td><td>Recurring annual revenue</td></tr>
-    <tr><td>Group booking fee</td><td>BDT 50 organizer fee per group session created</td><td>Low friction, high volume</td></tr>
-    <tr class="table-row-alt"><td>Referral commissions</td><td>2% of first 5 bookings made by referred koshais</td><td>Growth flywheel incentive</td></tr>
-  </table>
-</section>
+            const results = [];
+            document.querySelectorAll('.section-title, h3, p, .feature-item').forEach(el => {
+                const text = el.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    const section = el.closest('section');
+                    results.push({
+                        title: el.innerText.substring(0, 50) + (el.innerText.length > 50 ? '...' : ''),
+                        sectionId: section ? section.id : 'cover',
+                        sectionName: section ? section.id.charAt(0).toUpperCase() + section.id.slice(1) : 'Home'
+                    });
+                }
+            });
 
-<!-- 13. RISKS -->
-<section id="risks" class="section">
-  <div class="section-header"><div class="section-label">13 — Risks</div><h2 class="section-title">13. Risks & Mitigations</h2></div>
-  <table class="data-table">
-    <tr><th>Risk</th><th>Likelihood</th><th>Mitigation</th></tr>
-    <tr><td>Koshais don't own smartphones</td><td>Medium</td><td>Partner with local mosque committees and butcher associations for group onboarding; offer feature phones SMS fallback for confirmations</td></tr>
-    <tr class="table-row-alt"><td>bKash API approval delays</td><td>Medium</td><td>Start with cash-on-delivery option; bKash integration added in Phase 3 only after approval</td></tr>
-    <tr><td>Low supply at launch</td><td>High</td><td>Pre-register koshais before app launch via Facebook/WhatsApp outreach in major districts</td></tr>
-    <tr class="table-row-alt"><td>No-shows despite deposit</td><td>Low</td><td>Deposit is non-refundable if cancelled within 12h of slot; penalize repeat no-shows with account suspension</td></tr>
-    <tr><td>Firebase costs scaling</td><td>Low</td><td>Firebase free tier handles ~50k reads/day; add Firestore index budgets and listener cleanup to control costs</td></tr>
-    <tr class="table-row-alt"><td>Google Play rejection</td><td>Low</td><td>Follow all data safety requirements, privacy policy, and avoid sensitive permissions without justification</td></tr>
-    <tr><td>Competitor copies the idea</td><td>Medium</td><td>Move fast, build community trust, lock in verified koshai supply side before competitors</td></tr>
-  </table>
-</section>
+            // Unique results
+            const uniqueResults = results.slice(0, 8);
+            
+            searchResults.innerHTML = uniqueResults.map(res => `
+                <div class="result-item" onclick="goToResult('${res.sectionId}')">
+                    <span class="result-title">${res.title}</span>
+                    <span class="result-snippet">In ${res.sectionName}</span>
+                </div>
+            `).join('');
+        });
 
-<!-- APPENDIX -->
-<section class="section" style="background: var(--gray-light);">
-  <div class="section-header"><div class="section-label">14 — Appendix</div><h2 class="section-title">14. Appendix — Quick Reference</h2></div>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin-bottom: 14px;">14.1 Districts to Support at Launch</h3>
-  <ul class="bullet-list">
-    <li>Dhaka (highest density, largest Eid demand)</li>
-    <li>Narayanganj (app founder's base)</li>
-    <li>Chattogram (second largest city)</li>
-    <li>Sylhet (diaspora remittance, high purchasing power)</li>
-    <li>Rajshahi (cattle-producing region, strong koshai supply)</li>
-    <li>Khulna, Cumilla, Gazipur (Phase 2 expansion)</li>
-  </ul>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin: 28px 0 14px;">14.2 Key API Credentials Needed</h3>
-  <ul class="bullet-list">
-    <li>Firebase: google-services.json from Firebase Console</li>
-    <li>Google Maps: Maps SDK API key with Maps, Places, Directions enabled</li>
-    <li>bKash PGW: Merchant account from bKash merchant portal</li>
-    <li>Nagad: Merchant account from Nagad merchant portal</li>
-  </ul>
-  
-  <h3 style="font-size: 1rem; font-weight: 600; color: var(--primary); margin: 28px 0 14px;">14.3 Useful Firebase Console Links</h3>
-  <ul class="bullet-list">
-    <li>Firebase Console: console.firebase.google.com</li>
-    <li>Google Play Console: play.google.com/console</li>
-    <li>Google Maps Platform: console.cloud.google.com/google/maps-apis</li>
-    <li>bKash Merchant: merchant.bkash.com</li>
-  </ul>
-  
-  <div class="color-box">
-    <p>This document covers the complete Koshai Finder app — 18 features, 4 phases, 24 weeks, full Kotlin + Firebase implementation. Build Phase 1 first, get real users, then expand.</p>
-  </div>
-</section>
+        window.goToResult = (id) => {
+            searchOverlay.style.display = 'none';
+            const section = document.getElementById(id);
+            window.scrollTo({
+                top: section.offsetTop - 72,
+                behavior: 'smooth'
+            });
+        };
 
-<footer class="footer">
-  <div class="footer-content">
-    <h2>Koshai Finder Bangladesh</h2>
-    <p>Android Studio · Kotlin · Firebase · Google Maps SDK</p>
-    <div class="footer-links">
-      <a href="#" class="footer-link">Documentation</a>
-      <a href="#" class="footer-link">GitHub</a>
-      <a href="#" class="footer-link">Play Store</a>
-    </div>
-  </div>
-</footer>
-
-<script>
-function scrollTo(id) {
-  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-}
-
-const sections = document.querySelectorAll('section[id]');
-window.addEventListener('scroll', () => {
-  let current = '';
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop;
-    if (scrollY >= sectionTop - 100) {
-      current = section.getAttribute('id');
-    }
-  });
-  document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.classList.remove('active');
-    if (btn.getAttribute('onclick')?.includes(current)) {
-      btn.classList.add('active');
-    }
-  });
-});
-</script>
-
+        // Trigger reveal for top section
+        window.dispatchEvent(new Event('scroll'));
+    </script>
 </body>
 </html>
