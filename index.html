@@ -869,16 +869,18 @@
             
             <nav class="nav-links">
                 <button class="nav-btn active" data-section="cover">Cover</button>
+                <button class="nav-btn" data-section="roles">3 Roles</button>
                 <button class="nav-btn" data-section="summary">Summary</button>
                 <button class="nav-btn" data-section="problem">Problem</button>
                 <button class="nav-btn" data-section="tech">Tech</button>
                 <button class="nav-btn" data-section="schema">Architecture</button>
                 <button class="nav-btn" data-section="screens">Screens</button>
+                <button class="nav-btn" data-section="admin-role">Admin Role</button>
                 <button class="nav-btn" data-section="code">Code</button>
                 <button class="nav-btn" data-section="features">Features</button>
                 <button class="nav-btn" data-section="pipeline">Pipeline</button>
                 <button class="nav-btn" data-section="structure">Structure</button>
-                <button class="nav-btn" data-section="monetization">Revenue</button>
+                <button class="nav-btn" data-section="risks">Risks</button>
                 <button class="nav-btn" data-section="appendix">Appendix</button>
             </nav>
 
@@ -915,7 +917,7 @@
             <p class="hero-subtitle">কোশাই ফাইন্ডার বাংলাদেশ — Complete Product, Technical & Pipeline Document</p>
             <div class="hero-stats">
                 <div class="stat-card">
-                    <span class="stat-value">18</span>
+                    <span class="stat-value">22</span>
                     <span class="stat-label">Features</span>
                 </div>
                 <div class="stat-card">
@@ -923,7 +925,7 @@
                     <span class="stat-label">Phases</span>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-value">22</span>
+                    <span class="stat-value">32+</span>
                     <span class="stat-label">Screens</span>
                 </div>
                 <div class="stat-card">
@@ -934,19 +936,51 @@
         </div>
     </section>
 
+    <!-- 1A. THREE-ROLE SYSTEM -->
+    <section id="roles" class="section reveal">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">01A — Three-Role Architecture</div>
+                <h2 class="section-title">1A. Three-Role System Overview</h2>
+            </div>
+            
+            <p style="margin-bottom: 32px; color: var(--text-muted);">
+                The app supports three distinct roles, each with its own authentication path, screens, and Firestore permissions. A single Firebase Auth account is tied to exactly one role — stored in the users, koshais, or admins collections respectively.
+            </p>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Role</th><th>Who</th><th>Access Level</th><th>Auth Method</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>User</strong></td><td>Families / individuals who need a koshai</td><td>Book, track, review, pay, chat</td><td>Phone OTP → role: user</td></tr>
+                        <tr><td><strong>Koshai</strong></td><td>Registered animal slaughterers</td><td>Accept bookings, manage schedule, earn, chat</td><td>Phone OTP → role: koshai → pending approval</td></tr>
+                        <tr><td><strong>Admin</strong></td><td>Platform operators / company staff</td><td>Verify koshais, resolve disputes, manage platform</td><td>Email + Password → role: admin (invite-only)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info-box">
+                <i data-lucide="shield-check"></i>
+                <p>Admins use <strong>email/password auth</strong> (not OTP) and log in through a separate entry point — either the admin web dashboard or the in-app Admin Panel. Role is determined immediately after OTP/password verification via a Firestore collection lookup.</p>
+            </div>
+        </div>
+    </section>
+
     <!-- 1. EXECUTIVE SUMMARY -->
     <section id="summary" class="section reveal">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">01 — Executive Summary</div>
-                <h2 class="section-title">1. Executive Summary</h2>
+                <div class="section-label">02 — Executive Summary</div>
+                <h2 class="section-title">2. Executive Summary</h2>
             </div>
             
             <p style="margin-bottom: 24px; color: var(--text-muted);">
                 During Eid ul-Adha, millions of Bangladeshi families sacrifice animals (cows, goats, sheep) as part of religious observance. Finding a skilled and available koshai (animal slaughterer) becomes extremely difficult — demand spikes in a window of just 24–48 hours, communication is entirely word-of-mouth, and no-shows are common. Families waste hours searching, and skilled koshais lose potential income due to poor scheduling.
             </p>
             <p style="margin-bottom: 32px; color: var(--text-muted);">
-                Koshai Finder solves this with a two-sided marketplace app: users find, book, and pay verified koshais near them; koshais manage their schedule, availability, and earnings — all from a smartphone. Built on Android (Kotlin) with Firebase as the backend, the app targets the 170+ million population of Bangladesh, with peak use during the three-day Eid period.
+                Koshai Finder solves this with a <strong>three-sided marketplace app</strong>: Users find, book, and pay verified koshais near them; Koshais manage their schedule, availability, and earnings; and <strong>Admins oversee the entire platform</strong> — verifying koshais, resolving disputes, managing fraud alerts, and controlling platform-wide settings. Built on Android (Kotlin) with Firebase as the backend and a React-based admin web dashboard, the app targets the 170+ million population of Bangladesh, with peak use during the three-day Eid period.
             </p>
 
             <div class="table-wrapper">
@@ -955,27 +989,28 @@
                         <tr><th>Metric</th><th>Value</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Platform</td><td>Android (minSDK 21 — covers 98% of Bangladeshi devices)</td></tr>
-                        <tr><td>Language</td><td>Kotlin</td></tr>
-                        <tr><td>Backend</td><td>Firebase (Auth, Firestore, Realtime DB, FCM, Storage)</td></tr>
-                        <tr><td>Maps</td><td>Google Maps SDK + Google Places API</td></tr>
+                        <tr><td>Platform</td><td>Android (minSDK 21) + Admin Web App (React + Firebase Hosting)</td></tr>
+                        <tr><td>Language</td><td>Kotlin (Android) + Node.js/TypeScript (Cloud Functions) + React (Admin Dashboard)</td></tr>
+                        <tr><td>Backend</td><td>Firebase (Auth, Firestore, Realtime DB, FCM, Storage, Cloud Functions)</td></tr>
+                        <tr><td>Maps</td><td>Google Maps SDK + Google Places API + Heatmap</td></tr>
                         <tr><td>Payment</td><td>bKash & Nagad payment gateway (Phase 3)</td></tr>
-                        <tr><td>Total screens</td><td>~22 screens (user side: 12, koshai side: 10)</td></tr>
-                        <tr><td>Total features</td><td>18 features across 4 release phases</td></tr>
+                        <tr><td>Total roles</td><td><strong>3</strong> — User, Koshai, Admin (with 3 permission tiers)</td></tr>
+                        <tr><td>Total screens</td><td>~32 screens (user: 12, koshai: 10, admin mobile: 5, admin web: 5+)</td></tr>
+                        <tr><td>Total features</td><td><strong>22 features</strong> across 4 release phases</td></tr>
                         <tr><td>Timeline</td><td>24 weeks (6 weeks per phase)</td></tr>
-                        <tr><td>Primary language</td><td>Bangla (বাংলা) UI with English admin panel</td></tr>
+                        <tr><td>Primary language</td><td>Bangla (বাংলা) app UI + English admin panel</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </section>
 
-    <!-- 2. PROBLEM & SOLUTION -->
+    <!-- 3. PROBLEM & SOLUTION -->
     <section id="problem" class="section reveal">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">02 — Problem & Solution</div>
-                <h2 class="section-title">2. Problem Statement & Solution</h2>
+                <div class="section-label">03 — Problem & Solution</div>
+                <h2 class="section-title">3. Problem Statement & Solution</h2>
             </div>
             
             <div class="card-grid">
@@ -1007,12 +1042,12 @@
         </div>
     </section>
 
-    <!-- 3. TECH STACK -->
+    <!-- 4. TECH STACK -->
     <section id="tech" class="section reveal">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">03 — Technology Stack</div>
-                <h2 class="section-title">3. Full Technology Stack</h2>
+                <div class="section-label">04 — Technology Stack</div>
+                <h2 class="section-title">4. Full Technology Stack</h2>
             </div>
             
             <div class="table-wrapper">
@@ -1047,16 +1082,16 @@
         </div>
     </section>
 
-    <!-- 4. SCHEMA -->
+    <!-- 5. SCHEMA -->
     <section id="schema" class="section reveal">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">04 — Architecture</div>
-                <h2 class="section-title">4. Complete Firebase Data Architecture</h2>
+                <div class="section-label">05 — Architecture</div>
+                <h2 class="section-title">5. Complete Firebase Data Architecture</h2>
             </div>
 
             <div class="schema-card">
-                <div class="schema-title"><i data-lucide="database"></i> 4.1 Firestore Collections Schema</div>
+                <div class="schema-title"><i data-lucide="database"></i> 5.1 Firestore Collections Schema</div>
                 
                 <div class="code-container">
                     <div class="code-header">
@@ -1139,7 +1174,7 @@
             </div>
 
             <div class="schema-card" style="margin-top: 32px;">
-                <div class="schema-title"><i data-lucide="shield-check"></i> 4.2 Firestore Security Rules</div>
+                <div class="schema-title"><i data-lucide="shield-check"></i> 5.2 Firestore Security Rules</div>
                 <div class="code-container">
                     <div class="code-header">
                         <div class="code-title">firestore.rules</div>
@@ -1168,16 +1203,16 @@ service cloud.firestore {
         </div>
     </section>
 
-    <!-- 5. SCREENS -->
+    <!-- 6. SCREENS -->
     <section id="screens" class="section reveal">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">05 — Screen List</div>
-                <h2 class="section-title">5. Complete Screen & Navigation Plan</h2>
+                <div class="section-label">06 — Screen List</div>
+                <h2 class="section-title">6. Complete Screen & Navigation Plan</h2>
             </div>
             
             <div class="table-wrapper">
-                <h3 style="padding: 16px 20px; background: var(--primary-light); color: var(--primary); font-size: 1rem;">5.1 User Screens (12 screens)</h3>
+                <h3 style="padding: 16px 20px; background: var(--primary-light); color: var(--primary); font-size: 1rem;">6.1 User Screens (12 screens)</h3>
                 <table class="data-table">
                     <thead>
                         <tr><th>Screen</th><th>Fragment/Activity</th><th>Description</th></tr>
@@ -1200,7 +1235,7 @@ service cloud.firestore {
             </div>
 
             <div class="table-wrapper" style="margin-top: 32px;">
-                <h3 style="padding: 16px 20px; background: var(--primary-light); color: var(--primary); font-size: 1rem;">5.2 Koshai Screens (10 screens)</h3>
+                <h3 style="padding: 16px 20px; background: var(--primary-light); color: var(--primary); font-size: 1rem;">6.2 Koshai Screens (10 screens)</h3>
                 <table class="data-table">
                     <thead>
                         <tr><th>Screen</th><th>Fragment/Activity</th><th>Description</th></tr>
@@ -1222,17 +1257,134 @@ service cloud.firestore {
         </div>
     </section>
 
-    <!-- 6. CODE -->
+    <!-- 7. ADMIN ROLE -->
+    <section id="admin-role" class="section reveal">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">07A — Admin Role</div>
+                <h2 class="section-title">6A. Admin Role — Complete Specification</h2>
+            </div>
+
+            <h3 style="margin-bottom: 24px; font-size: 1.25rem; font-weight: 700;">6A.1 Admin Permission Levels</h3>
+            <div class="table-wrapper" style="margin-bottom: 32px;">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Permission</th><th>Superadmin</th><th>Moderator</th><th>Support</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Verify / reject koshais</td><td>✓</td><td>✓</td><td>—</td></tr>
+                        <tr><td>Ban / unban koshais or users</td><td>✓</td><td>✓</td><td>—</td></tr>
+                        <tr><td>Resolve disputes + trigger refunds</td><td>✓</td><td>✓</td><td>Read-only</td></tr>
+                        <tr><td>Edit platform settings (Eid mode, surge, commission)</td><td>✓</td><td>—</td><td>—</td></tr>
+                        <tr><td>View analytics dashboard</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                        <tr><td>Create / deactivate admin accounts</td><td>✓</td><td>—</td><td>—</td></tr>
+                        <tr><td>Hide / restore reviews</td><td>✓</td><td>✓</td><td>—</td></tr>
+                        <tr><td>Add admin notes to bookings</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                        <tr><td>Cancel any booking</td><td>✓</td><td>✓</td><td>—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="margin-bottom: 24px; font-size: 1.25rem; font-weight: 700;">6A.2 Admin Screens — Mobile In-App Panel (5 screens)</h3>
+            <p style="margin-bottom: 16px; color: var(--text-muted);">
+                Admin users who log in on Android are routed to a restricted Admin Panel (not visible to regular users or koshais). This provides quick actions on-the-go. The full dashboard is the web app.
+            </p>
+            <div class="table-wrapper" style="margin-bottom: 32px;">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Screen</th><th>Fragment/Activity</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Admin login</td><td>AdminLoginFragment</td><td>Email + password auth (separate entry, not OTP). Checks admins/{uid} for isActive.</td></tr>
+                        <tr><td>Admin dashboard</td><td>AdminDashboardFragment</td><td>Overview cards: pending verifications, open alerts, active bookings, platform status toggle</td></tr>
+                        <tr><td>Koshai verification queue</td><td>VerificationQueueFragment</td><td>List of koshais with isVerified=false; tap to view NID, approve or reject with reason</td></tr>
+                        <tr><td>Alert center</td><td>AlertCenterFragment</td><td>Live feed of adminAlerts sorted by severity; tap to view details and mark resolved</td></tr>
+                        <tr><td>Dispute manager</td><td>DisputeManagerFragment</td><td>Open disputes list; assign to self, add resolution note, trigger refund</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="margin-bottom: 24px; font-size: 1.25rem; font-weight: 700;">6A.3 Admin Web Dashboard (5 pages)</h3>
+            <p style="margin-bottom: 16px; color: var(--text-muted);">
+                Hosted on Firebase Hosting at <code style="background: var(--primary-light); padding: 2px 6px; border-radius: 4px;">admin.koshaiapp.com</code>. Built with React + Firebase SDK. Admin must be authenticated and present in the admins collection with isActive=true.
+            </p>
+            <div class="table-wrapper" style="margin-bottom: 32px;">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Page</th><th>Route</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Overview</td><td>/dashboard</td><td>KPI cards: daily bookings, revenue, new koshais, active users, open disputes. Line charts for trends.</td></tr>
+                        <tr><td>Koshai management</td><td>/koshais</td><td>Full table of all koshais with filters. Approve/reject NID, ban/unban, edit surge cap, view earnings.</td></tr>
+                        <tr><td>Booking oversight</td><td>/bookings</td><td>All bookings with status filter. Can cancel on behalf of user/koshai, add admin note.</td></tr>
+                        <tr><td>Disputes & alerts</td><td>/disputes</td><td>Unified view of disputes and fraud alerts. Assign, resolve, dismiss with audit trail.</td></tr>
+                        <tr><td>Platform settings</td><td>/settings</td><td>Toggle Eid mode, set surge limits, booking deposit %, platform commission, maintenance mode banner.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="margin-bottom: 24px; font-size: 1.25rem; font-weight: 700;">6A.4 New Firestore Collections</h3>
+            <div class="card-grid">
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-title">Collection: admins</div>
+                        <button class="copy-btn"><i data-lucide="copy"></i> Copy</button>
+                    </div>
+                    <div class="code-content"><pre>admins/{uid}
+{
+  <span class="key">uid</span>: <span class="type">String</span>,        <span class="comment">// Firebase Auth UID (email/password)</span>
+  <span class="key">name</span>: <span class="type">String</span>,       <span class="comment">// Admin staff name</span>
+  <span class="key">email</span>: <span class="type">String</span>,      <span class="comment">// Login email</span>
+  <span class="key">role</span>: <span class="type">String</span>,       <span class="comment">// superadmin | moderator | support</span>
+  <span class="key">permissions</span>: { <span class="comment">// Object with booleans</span>
+    <span class="key">canVerifyKoshais</span>: <span class="bool">Boolean</span>,
+    <span class="key">canBanUsers</span>: <span class="bool">Boolean</span>,
+    <span class="key">canResolveDisputes</span>: <span class="bool">Boolean</span>,
+    <span class="key">canEditSurge</span>: <span class="bool">Boolean</span>,
+    <span class="key">canViewAnalytics</span>: <span class="bool">Boolean</span>,
+    <span class="key">canManageAdmins</span>: <span class="bool">Boolean</span>
+  },
+  <span class="key">isActive</span>: <span class="bool">Boolean</span>,
+  <span class="key">lastLoginAt</span>: <span class="type">Timestamp</span>
+}</pre></div>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-title">Collection: disputes  [NEW]</div>
+                        <button class="copy-btn"><i data-lucide="copy"></i> Copy</button>
+                    </div>
+                    <div class="code-content"><pre>disputes/{disputeId}
+{
+  <span class="key">bookingId</span>: <span class="type">String</span>,
+  <span class="key">raisedBy</span>: <span class="type">String</span>,
+  <span class="key">raisedByUid</span>: <span class="type">String</span>,
+  <span class="key">reason</span>: <span class="type">String</span>,
+  <span class="key">description</span>: <span class="type">String</span>,
+  <span class="key">evidenceUrls</span>: [<span class="type">String</span>],
+  <span class="key">status</span>: <span class="type">String</span>,
+  <span class="key">assignedAdmin</span>: <span class="type">String</span>,
+  <span class="key">resolution</span>: <span class="type">String</span>,
+  <span class="key">refundAmount</span>: <span class="number">Number</span>,
+  <span class="key">createdAt</span>: <span class="type">Timestamp</span>,
+  <span class="key">resolvedAt</span>: <span class="type">Timestamp</span>
+}</pre></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. CODE -->
     <section id="code" class="section reveal">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">06 — Implementation</div>
-                <h2 class="section-title">6. Key Kotlin Implementation Code</h2>
+                <div class="section-label">07 — Implementation</div>
+                <h2 class="section-title">7. Key Kotlin Implementation Code</h2>
             </div>
 
             <div class="code-container">
                 <div class="code-header">
-                    <div class="code-title">6.2 Data Models (Koshai.kt)</div>
+                    <div class="code-title">7.2 Data Models (Koshai.kt)</div>
                     <button class="copy-btn"><i data-lucide="copy"></i> Copy</button>
                 </div>
                 <div class="code-content"><pre><span class="key">data class</span> <span class="type">Koshai</span>(
@@ -1252,7 +1404,7 @@ service cloud.firestore {
 
             <div class="code-container">
                 <div class="code-header">
-                    <div class="code-title">6.3 HomeViewModel.kt</div>
+                    <div class="code-title">7.3 HomeViewModel.kt</div>
                     <button class="copy-btn"><i data-lucide="copy"></i> Copy</button>
                 </div>
                 <div class="code-content"><pre><span class="type">@HiltViewModel</span>
@@ -1283,8 +1435,8 @@ service cloud.firestore {
     <section id="features" class="section reveal">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">07 — Features</div>
-                <h2 class="section-title">8. All 18 Features — Specification</h2>
+                <div class="section-label">08 — Features</div>
+                <h2 class="section-title">8. All 22 Features — Specification</h2>
             </div>
             
             <div class="table-wrapper">
@@ -1310,11 +1462,45 @@ service cloud.firestore {
                         <tr><th>#</th><th>Feature</th><th>Implementation</th><th>Firebase</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>6</td><td>Verified badge</td><td>Admin sets isVerified=true in Firestore</td><td>Firestore</td></tr>
-                        <tr><td>7</td><td>Live tracker</td><td>Realtime DB status updates + GPS on map</td><td>RTDB</td></tr>
-                        <tr><td>8</td><td>In-app chat</td><td>Realtime DB chat per bookingId</td><td>RTDB</td></tr>
-                        <tr><td>9</td><td>Ratings/Reviews</td><td>Post-completion form, Cloud Function avg</td><td>Firestore</td></tr>
-                        <tr><td>10</td><td>Estimator</td><td>Local Kotlin calc: count × rate × surge</td><td>Local</td></tr>
+                        <tr><td>6</td><td>Koshai verification queue</td><td>Admin mobile panel + web dashboard show koshais with isVerified=false; approve sets flag + notifies via Cloud Function</td><td>Firestore, FCM, Functions</td></tr>
+                        <tr><td>7</td><td>Ban / unban koshai</td><td>Admin sets isBanned=true; Cloud Function notifies koshai; banned koshais hidden from all searches</td><td>Firestore, FCM, Functions</td></tr>
+                        <tr><td>8</td><td>Live booking tracker</td><td>Realtime DB status updates + koshai GPS on mini-map</td><td>Realtime DB, Maps SDK</td></tr>
+                        <tr><td>9</td><td>In-app chat</td><td>Realtime DB chat per bookingId, no phone number sharing</td><td>Realtime Database</td></tr>
+                        <tr><td>10</td><td>Ratings & photo reviews</td><td>Post-completion form, Cloud Function updates rating average; admin can hide reviews</td><td>Firestore, Storage, Functions</td></tr>
+                        <tr><td>11</td><td>Animal count estimator</td><td>Local Kotlin calculation: count x rate x surgeMultiplier</td><td>None (local logic)</td></tr>
+                        <tr><td>12</td><td>Dispute filing</td><td>User/koshai can raise dispute with reason & evidence; Cloud Function creates admin alert</td><td>Firestore, Functions</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-wrapper" style="margin-top: 32px;">
+                <h3 style="padding: 16px 20px; background: #fffbeb; color: #d97706; font-size: 1rem;">Phase 3 — Growth (Weeks 13–18)</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>#</th><th>Feature</th><th>Implementation</th><th>Firebase</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>13</td><td>bKash / Nagad payment</td><td>Retrofit call to bKash PGW API, store txn ref in Firestore</td><td>Firestore, Functions</td></tr>
+                        <tr><td>14</td><td>Payment refunds</td><td>Admin can trigger refund on disputed/cancelled bookings via admin dashboard</td><td>Firestore, Functions</td></tr>
+                        <tr><td>15</td><td>Platform settings panel</td><td>Admin controls Eid mode dates, surge cap, commission % from web dashboard</td><td>Firestore</td></tr>
+                        <tr><td>16</td><td>Surge pricing (Eid mode)</td><td>Admin enables globally via platformSettings; koshais can also toggle their own surgeMultiplier within cap</td><td>Firestore, Functions</td></tr>
+                        <tr><td>17</td><td>Waitlist system</td><td>Ordered subcollection per koshai, trigger on booking cancel, auto-notify waiting users</td><td>Firestore, FCM</td></tr>
+                        <tr><td>18</td><td>Smart reminders</td><td>Scheduled Cloud Function checks bookings every 30 mins, sends 24h & 2h reminders</td><td>Cloud Functions, FCM</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-wrapper" style="margin-top: 32px;">
+                <h3 style="padding: 16px 20px; background: #fef2f2; color: #dc2626; font-size: 1rem;">Phase 4 — Scale (Weeks 19–24)</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>#</th><th>Feature</th><th>Implementation</th><th>Firebase</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>19</td><td>Group / neighborhood booking</td><td>groupSessions collection, join code, shared koshai slot, travel fee split</td><td>Firestore</td></tr>
+                        <tr><td>20</td><td>Demand heatmap</td><td>Aggregate Firestore data by upazila, Maps JS API heatmap layer visible to users and in admin dashboard</td><td>Firestore, Maps SDK</td></tr>
+                        <tr><td>21</td><td>Koshai leaderboard</td><td>Nightly Cloud Function ranks koshais by rating+jobs per district; visible to koshais and in admin analytics</td><td>Firestore, Functions</td></tr>
+                        <tr><td>22</td><td>Admin analytics dashboard</td><td>React web app: daily KPIs, revenue trends, booking volume, top koshais, district coverage charts</td><td>Firestore, Auth, Functions</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1325,7 +1511,7 @@ service cloud.firestore {
     <section id="pipeline" class="section reveal">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">08 — Pipeline</div>
+                <div class="section-label">09 — Pipeline</div>
                 <h2 class="section-title">9. 24-Week Development Pipeline</h2>
             </div>
             
@@ -1373,7 +1559,7 @@ service cloud.firestore {
     <section id="structure" class="section reveal">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">09 — Project Structure</div>
+                <div class="section-label">10 — Project Structure</div>
                 <h2 class="section-title">10. Folder & Package Architecture</h2>
             </div>
             <div class="folder-tree">
@@ -1404,12 +1590,12 @@ service cloud.firestore {
         </div>
     </section>
 
-    <!-- 12. MONETIZATION -->
-    <section id="monetization" class="section reveal">
+    <!-- 11. RISKS -->
+    <section id="risks" class="section reveal">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">10 — Business</div>
-                <h2 class="section-title">12. Monetization Strategy</h2>
+                <div class="section-label">11 — Risks & Mitigations</div>
+                <h2 class="section-title">11. Risks & Mitigations</h2>
             </div>
             <div class="table-wrapper">
                 <table class="data-table">
@@ -1428,39 +1614,93 @@ service cloud.firestore {
         </div>
     </section>
 
-    <!-- APPENDIX -->
+    <!-- 11. RISKS -->
+    <section id="risks" class="section reveal">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">11 — Risks & Mitigations</div>
+                <h2 class="section-title">11. Risks & Mitigations</h2>
+            </div>
+            
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Risk</th><th>Likelihood</th><th>Mitigation</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Koshais don't own smartphones</td><td>Medium</td><td>Partner with local mosque committees and butcher associations for group onboarding; SMS fallback for confirmations</td></tr>
+                        <tr><td>bKash API approval delays</td><td>Medium</td><td>Start with cash-on-delivery; bKash added in Phase 3 only after approval</td></tr>
+                        <tr><td>Low supply at launch</td><td>High</td><td>Pre-register koshais before launch via Facebook/WhatsApp outreach in major districts</td></tr>
+                        <tr><td>No-shows despite deposit</td><td>Low</td><td>Deposit non-refundable if cancelled within 12h; repeat no-shows flagged to admin for review</td></tr>
+                        <tr><td>Admin account compromise</td><td>Low</td><td>Email+password auth with 2FA recommended; superadmin can instantly deactivate any admin via isActive=false; all admin actions logged</td></tr>
+                        <tr><td>Firebase costs scaling</td><td>Low</td><td>Free tier handles ~50k reads/day; Firestore index budgets and listener cleanup to control costs</td></tr>
+                        <tr><td>Google Play rejection</td><td>Low</td><td>Follow all data safety requirements, privacy policy; avoid sensitive permissions without justification</td></tr>
+                        <tr><td>Competitor copies the idea</td><td>Medium</td><td>Move fast, build community trust, lock in verified koshai supply side before competitors</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info-box" style="margin-top: 32px;">
+                <i data-lucide="alert-triangle"></i>
+                <p>The biggest risk is <strong>low initial koshai supply</strong>. Solution: Run a 2-3 week pre-launch outreach campaign to sign up 50-100 koshais in each launch district before Day 1.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. APPENDIX -->
     <section id="appendix" class="section reveal">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">11 — Appendix</div>
-                <h2 class="section-title">14. Appendix — Quick Reference</h2>
+                <div class="section-label">12 — Appendix</div>
+                <h2 class="section-title">12. Appendix — Quick Reference</h2>
             </div>
             
             <div class="card-grid">
                 <div class="card">
-                    <h3>Launch Districts</h3>
+                    <h3>Launch Districts (Phase 1)</h3>
                     <ul class="feature-list">
-                        <li class="feature-item">Dhaka (Highest density)</li>
-                        <li class="feature-item">Narayanganj (Founder base)</li>
-                        <li class="feature-item">Chattogram (Second city)</li>
-                        <li class="feature-item">Sylhet (High buying power)</li>
-                        <li class="feature-item">Rajshahi (Strong supply)</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Dhaka (Highest density, largest Eid demand)</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Narayanganj (Founder's base, strong koshai supply)</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Chattogram (Second-largest city)</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Sylhet (High purchasing power, diaspora remittance)</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Rajshahi (Cattle-producing region, strong supply)</li>
                     </ul>
                 </div>
                 <div class="card">
-                    <h3>API Credentials</h3>
+                    <h3>API Credentials Needed</h3>
                     <ul class="feature-list">
-                        <li class="feature-item">Firebase: google-services.json</li>
-                        <li class="feature-item">Google Maps SDK API Key</li>
-                        <li class="feature-item">bKash Merchant Account</li>
-                        <li class="feature-item">Nagad Merchant Account</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Firebase: google-services.json from Firebase Console</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Google Maps: SDK API key with Maps, Places enabled</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>bKash PGW: Merchant account from bKash portal</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Nagad: Merchant account from Nagad portal</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div>Firebase Admin SDK: service account JSON for Cloud Functions</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Useful Links & Resources</h3>
+                    <ul class="feature-list">
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="link"></i></div><strong>Firebase Console:</strong> console.firebase.google.com</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="link"></i></div><strong>Google Play Console:</strong> play.google.com/console</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="link"></i></div><strong>Google Maps Platform:</strong> console.cloud.google.com/google/maps-apis</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="link"></i></div><strong>bKash Merchant:</strong> merchant.bkash.com</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="link"></i></div><strong>Admin Dashboard:</strong> admin.koshaiapp.com (Firebase Hosting)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Key Metrics at Launch</h3>
+                    <ul class="feature-list">
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div><strong>Target Android:</strong> minSDK 21 (covers 98% of devices)</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div><strong>Target Language:</strong> Bangla (বাংলা) + English admin</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div><strong>Peak Period:</strong> Eid ul-Adha (3-day window)</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div><strong>Initial target:</strong> 50-100 verified koshais per district</li>
+                        <li class="feature-item"><div class="feature-icon"><i data-lucide="check"></i></div><strong>Success metric:</strong> 500+ bookings during first Eid</li>
                     </ul>
                 </div>
             </div>
 
             <div class="info-box" style="margin-top: 48px;">
                 <i data-lucide="info"></i>
-                <p>This document covers the complete Koshai Finder app — 18 features, 4 phases, 24 weeks. Build Phase 1 first, get real users, then expand.</p>
+                <p>This document covers the <strong>complete Koshai Finder app</strong> — 3 roles (User, Koshai, Admin), 22 features, 4 phases, 24 weeks, full Kotlin + Firebase + React implementation. Build Phase 1 first, get real users, then expand through phases 2–4.</p>
             </div>
         </div>
     </section>
@@ -1473,13 +1713,15 @@ service cloud.firestore {
                 <span>Koshai Finder</span>
             </div>
             <h2>Revolutionizing Eid in Bangladesh</h2>
-            <p>Complete Product, Technical & Pipeline Document</p>
+            <p>Complete Product, Technical & Pipeline Document (24 Weeks, 22 Features, 3 Roles)</p>
             
             <div class="footer-links">
                 <a href="#cover" class="footer-link">Home</a>
-                <a href="#tech" class="footer-link">Tech Stack</a>
+                <a href="#roles" class="footer-link">3 Roles</a>
+                <a href="#admin-role" class="footer-link">Admin Panel</a>
+                <a href="#features" class="footer-link">22 Features</a>
                 <a href="#pipeline" class="footer-link">Timeline</a>
-                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#appendix" class="footer-link">Quick Ref</a>
             </div>
 
             <div class="copyright">
